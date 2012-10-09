@@ -1,0 +1,422 @@
+/* 
+    Document   : printer
+    Created on : Jun 18, 2012, 2:00:13 PM
+    Author     : rick
+    Description:
+                Default printer output style sheet
+*/
+
+root { 
+    display: block;
+}
+
+body{
+    font: 12pt arial, sans-serif, verdana;
+    color: #000;
+    
+}
+
+
+
+/* 
+    Document   : standard screen rendering style sheet
+    Created on : Jun 18, 2012, 1:58:40 PM
+    Author     : rick
+    Description:
+                Default Screen style sheet for PCs and Laptops
+*/
+
+root { 
+    display: block;
+}
+
+body{
+    font: 10pt arial, sans-serif, verdana;
+    color: #333;
+}
+
+h1{
+    text-shadow: 1px 1px 3px #c7c3c7;
+    filter: dropshadow(color=#c7c3c7, offx=1, offy=1);
+}
+
+h2{
+    text-shadow: 1px 1px 3px #c7c3c7;
+    filter: dropshadow(color=#c7c3c7, offx=1, offy=1);
+}
+
+.mainContainer{
+
+}
+.mainContainer p{
+    background-color: transparent;
+}
+.loginForm{
+    display: none;
+    visibility: hidden;
+}
+
+.submit{
+    display: none;
+    visibility: hidden;
+}
+.logo{
+    float: left;
+    display: block;
+    margin-right: 20px;
+}
+.login{
+    float: right;
+    padding: 10px;
+    display: block;
+}
+
+.errormsg{
+    display: none;
+    visibility: hidden;
+}
+
+.menuBar{
+    display: none;
+    visibility: hidden;
+}
+
+.searchSpan{
+    display: none;
+    visibility: hidden;
+}
+
+#searchTerm{
+    display: none;
+    visibility: hidden;
+}
+
+
+/* PRIMARY CONTENT BOXES FULL SCREEN WIDTH */
+.contentBox{
+    clear: both;
+    
+}
+
+
+
+/* PRIMARY CONTENT BOXES SMALL BOX WIDTH FOR INPUT FLOATING */
+.contentBoxSmall{
+    clear: both;
+}
+
+
+/* LEFT PRIMARY CONTENT BOX */
+.contentBoxLeft{
+    clear: both;
+    
+}
+
+/* RIGHT SECONDARY DISPLAY CONTENT BOX */
+
+.contentBoxRight{
+    clear: both;
+}
+
+.reminderTable{
+    font: 10pt arial, sans-serif;
+    color: #990099;
+    font-weight: bold;
+    width: 100%;
+    cellpadding: 2px;
+
+}
+.reminderTable td{
+    border: 1px solid #ccc;
+}
+
+.reminderTable tr:hover a{
+    color: #fff;
+    background-color: #990099;
+}
+
+.reminderTable a{
+    color: #990099;
+}
+.reminderTable a.visited{
+    color: #990099;
+}
+.reminderTable a:hover{
+    color: #990099;
+    background-color: #fff;
+}
+
+.reminderTableLarge{
+    font: 10pt arial, sans-serif;
+    color: #990099;
+    font-weight: bold;
+    width: 100%;
+    cellpadding: 2px;
+    -moz-border-radius: 0.6em;
+    -khtml-border-radius: 0.6em;
+    border-radius: 0.6em;
+    border: 2px solid #990099;
+    padding: 10px;
+}
+.reminderTableLarge td{
+    border: 1px solid #ccc;
+    padding: 4px;
+}
+.reminderTableLarge th{
+    background-color: #336699;
+    color: #fff;
+    font: 14pt arial, sans-serif;
+}
+
+
+.reminderTableLarge a{
+    color: #990099;
+}
+.reminderTableLarge a.visited{
+    color: #990099;
+}
+
+
+.todayReminder{
+    display: none;
+    visibility: hidden;
+}
+.highlight{
+    background-color: #cc0000;
+    color: #fff;
+}
+
+#reminderPopup{
+    display: none;
+    visibility: hidden;
+}
+
+.reminderItem{
+    display: block;
+    width: 200px;
+    border-bottom: 1px dashed #ccc;
+    font-weight: bold;
+    color: #fff;
+    padding: 4px 6px 4px 6px;
+    background: rgba(255,255,255, 0.4);
+}
+.reminderHide{
+    display: none;
+    visibility: hidden;
+}
+
+
+.iconSpan{
+    display: block;
+    float: left;
+    height: 50px;
+    width: 60px;
+    text-align: center;
+    margin: 0px 15px 10px 0px;
+}
+.clearSpan{
+    display: block;
+    width: 100%;
+    height: 10px;
+    clear: both;
+}
+
+.helpclass{
+    float: right;
+    margin: 0px 10px 10px 20px;
+}
+
+
+.firewalltable{
+    display: none;
+    visibility: hidden;
+}
+
+
+.searchtable{
+    display: none;
+    visibility: hidden;
+}
+
+
+.fwon{
+    display: none;
+    visibility: hidden;
+}
+
+.fwoff{
+    display: none;
+    visibility: hidden;
+}
+
+
+
+/* HELP SYSTEM BOX  */
+
+#helpbox{
+    display: none;
+    visibility: hidden;
+}
+
+#helpbox a.visited{
+    color: #336699;
+    text-decoration: none;
+}
+
+
+
+/* My Reports Table style */
+
+.myreports th{
+    background-color: #336699;
+    color: #fff;
+    font: 14pt arial, sans-serif;
+    font-weight: bold;
+    height: 30px;
+    cellpadding: 4px;
+    padding: 6px;
+}
+.myreports td{
+    cellpadding: 4px;
+    padding: 4px;
+}
+.myreports tr:hover{
+    background-color: #6699cc;
+    color: #fff;
+}
+
+.campusTable th{
+    background-color: #336699;
+    color: #fff;
+    font: 14pt arial, sans-serif;
+    font-weight: bold;
+    height: 30px;
+    cellpadding: 4px;
+    padding: 6px;
+}
+.campusTable td{
+    cellpadding: 4px;
+    padding: 4px;
+}
+.campusTable tr:hover{
+    background-color: #6699cc;
+    color: #fff;
+}
+
+
+.moduleName{
+    font: 12pt arial, sans-serif;
+    color: #336699;
+    font-weight: bold;
+}
+.moduleRequire{
+    color: #990099;
+}
+
+/*
+REPORTS CONTAINER AND OUTPUT INFORMATION
+*/
+.reportContainer{
+    
+}
+.reportContainer table{
+    border: 1px solid #ccc;
+}
+
+.reportContainer th{
+    background-color: #003366;
+    color: #fff;
+    padding: 4px;
+}
+.reportContainer td{
+    padding: 2px;
+    border: 1px solid #ccc;
+}
+
+
+
+/* Member Table Setup */
+
+.memberTable th{
+    background-color: #336699;
+    color: #fff;
+    font: 14pt arial, sans-serif;
+    font-weight: bold;
+    height: 30px;
+    cellpadding: 4px;
+    padding: 6px;
+}
+.memberTable td{
+    cellpadding: 4px;
+    padding: 4px;
+}
+.memberTable tr:hover{
+    background-color: #6699cc;
+    color: #fff;
+}
+
+
+
+.okayrow{
+    background-color: #99dd99;
+    color: #333;
+}
+
+.updated{
+    border: 2px solid #336699;
+    -moz-border-radius: 0.6em;
+    -khtml-border-radius: 0.6em;
+    color: #336699;
+    font-weight: bold;
+    padding: 4px;
+    width: 500px;
+    min-height: 30px; 
+}
+.confirm{
+    border: 2px solid #990000;
+    -moz-border-radius: 0.6em;
+    -khtml-border-radius: 0.6em;
+    color: #990000;
+    font-weight: bold;
+    padding: 4px;
+    width: 500px;
+    min-height: 30px; 
+}
+
+.hidden{
+    display: none;
+}
+
+.reminderWarning{
+    display: none;
+    visibility: hidden;
+}
+
+
+.familylink{
+    border: 0px;
+    font: 10pt arial, sans-serif;
+    color: #990099;
+}
+.familylink a{
+    color: #990099;
+    text-decoration: none;
+}
+.familylink a.visited{
+    color: #990099;
+    text-decoration: none;
+}
+.familylink a:hover{
+    text-decoration: underline;
+}
+
+
+.pictureBox{
+    -webkit-box-shadow: inset 0px 0px 13px 3px rgba(166, 166, 166, 0.4);
+    box-shadow: inset 0px 0px 13px 3px rgba(166, 166, 166, 0.4);
+}
+
+.errors{
+    display: none;
+    visibility: hidden;
+}
