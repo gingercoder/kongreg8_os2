@@ -543,7 +543,7 @@ class kongreg8app{
                 
             $sql = "SELECT * FROM kerrorlog WHERE logDate >= $lastweek AND logDate <= $today";
             $numitems = db::getnumrows($sql);
-            print "<p>There have been $numitems errors discovered in the last 7 days by the application</p>";
+            print "<p>There have been $numitems errors caught in the last 7 days by the application framework</p>";
             return;
         }
         

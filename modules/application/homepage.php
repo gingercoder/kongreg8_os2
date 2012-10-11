@@ -54,19 +54,18 @@ else{
 
 if($objKongreg8->checkAccessLevel('Kidschurch') == true){
     ?>
-    <a href="index.php?mid=400"><span class="iconSpan"><img src="images/icons/button-add.png" alt="Add Group" title="Add Group"/><br/>Add Group</span></a>
+    <a href="index.php?mid=400"><span class="iconSpan"><img src="images/icons/papers.png" alt="Group Control" title="Group Control"/><br/>Group Control</span></a>
+    
+    <a href="index.php?mid=420"><span class="iconSpan"><img src="images/icons/message-open.png" alt="Contact Group" title="Contact Group"/><br/>Contact Group</span></a>
 
-    <a href="index.php?mid=405"><span class="iconSpan"><img src="images/icons/edit.png" alt="Edit Group" title="Edit Group"/><br/>Edit Group</span></a>
+    
+    <a href="index.php?mid=430"><span class="iconSpan"><img src="images/icons/paper-clip.png" alt="Resources" title="Resources"/><br/>Resources</span></a>
 
-    <a href="index.php?mid=410"><span class="iconSpan"><img src="images/icons/button-delete.png" alt="Remove Group" title="Remove Group"/><br/>Remove Group</span></a>
+    <a href="index.php?mid=440"><span class="iconSpan"><img src="images/icons/game-pad.png" alt="Activity" title="Activity"/><br/>Activity</span></a>
 
-    <a href="index.php?mid=420"><span class="iconSpan"><img src="images/icons/paper-clip.png" alt="Resources" title="Resources"/><br/>Resources</span></a>
+    <a href="index.php?mid=450"><span class="iconSpan"><img src="images/icons/file-new.png" alt="Plans" title="Plans"/><br/>Plans</span></a>
 
-    <a href="index.php?mid=430"><span class="iconSpan"><img src="images/icons/game-pad.png" alt="Activity" title="Activity"/><br/>Activity</span></a>
-
-    <a href="index.php?mid=440"><span class="iconSpan"><img src="images/icons/file-new.png" alt="Plans" title="Plans"/><br/>Plans</span></a>
-
-    <a href="index.php?mid=450"><span class="iconSpan"><img src="images/icons/sign-in.png" alt="Registration" title="Registration"/><br/>Registration</span></a>
+    <a href="index.php?mid=460"><span class="iconSpan"><img src="images/icons/sign-in.png" alt="Registration" title="Registration"/><br/>Registration</span></a>
 <?php
 }
 else{

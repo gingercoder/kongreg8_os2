@@ -112,6 +112,31 @@
         
         
         /*
+         * KIDS CHURCH FEATURES SECTION
+         */
+        case "400":
+            // Group Add
+            require_once('application/kidschurch/home.php');
+            break;
+        case "405":
+            // Group Edit
+            require_once('application/kidschurch/editGroup.php');
+            break;
+        case "410":
+            // Group Remove
+            require_once('application/kidschurch/home.php');
+            break;
+        case "420":
+            // Group Email
+            require_once ('application/kidschurch/mailGroup.php');
+            break;
+        case "421":
+            // View Group Members
+            require_once ('application/kidschurch/viewMembers.php');
+            break;
+        
+        
+        /*
          * REPORTS FEATURES SECTION
          */
         case "500":

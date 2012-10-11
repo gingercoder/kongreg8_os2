@@ -5,17 +5,17 @@
  */
 
 
-class groups extends kongreg8app{
+class kidschurch extends kongreg8app{
     
     
     /*
-     * View all groups in the system for the main home screen
+     * View all kidschurch groups in the system for the main home screen
      * 
      */
     public function viewGroups($groupid='')
     {
         $groupid = db::escapechars($groupid);
-        $sql = "SELECT * FROM groups ORDER BY groupname ASC";
+        $sql = "SELECT * FROM kidschurchgroups ORDER BY groupname ASC";
         
         $result = db::returnallrows($sql);
         
@@ -40,9 +40,9 @@ class groups extends kongreg8app{
                     <td>".$groupitem['groupname']."</td>
                     <td>".$groupitem['groupdescription']."</td>
                     <td>".$this->memberidtoname($groupitem['groupleader'])."</td>
-                    <td><a href=\"index.php?mid=321&g=".$groupitem['groupID']."\">View</a> /
-                        <a href=\"index.php?mid=305&g=".$groupitem['groupID']."&edit=true\">Edit</a> / 
-                    <a href=\"index.php?mid=310&g=".$groupitem['groupID']."&remove=true\">Remove</a> 
+                    <td><a href=\"index.php?mid=421&g=".$groupitem['groupID']."\">View</a> /
+                        <a href=\"index.php?mid=405&g=".$groupitem['groupID']."&edit=true\">Edit</a> / 
+                    <a href=\"index.php?mid=410&g=".$groupitem['groupID']."&remove=true\">Remove</a> 
                     
                     </td>
                     </tr>";
@@ -58,13 +58,12 @@ class groups extends kongreg8app{
     }
     
     /*
-     * Add a group to the system based on the given details
+     * Add a kidschurch group to the system based on the given details
      * from the main home screen
      */
     public function addGroup($groupname, $groupdescription, $groupleader)
     {
-        
-        $sql = "INSERT INTO groups SET
+        $sql = "INSERT INTO kidschurchgroups SET
                 groupname='".db::escapechars($groupname)."',
                 groupdescription='".db::escapechars($groupdescription)."',
                 groupleader='".db::escapechars($groupleader)."'
@@ -73,7 +72,6 @@ class groups extends kongreg8app{
         if($result){
             $lastid = db::getlastid();
             $this->addMemberToGroup($lastID, $groupleader);
-            
             return true;
         }
         else{
@@ -84,12 +82,12 @@ class groups extends kongreg8app{
     }
     
     /*
-     * Edit / Update a group that exists in the system and store the new information
+     * Edit / Update a kidschurch group that exists in the system and store the new information
      * 
      */
     public function editGroup($groupid, $groupname, $groupdescription, $groupleader)
     {
-        $sql = "UPDATE groups SET 
+        $sql = "UPDATE kidschurchgroups SET 
                 groupname='".db::escapechars($groupname)."',
                 groupdescription='".db::escapechars($groupdescription)."',
                 groupleader='".db::escapechars($groupleader)."'
@@ -102,7 +100,7 @@ class groups extends kongreg8app{
             // Log the activity
             $logType = "Insert";
             $logValue = $_SESSION['Kusername']." edited group, ".db::escapechars($groupname);
-            $logArea = "Groups";				
+            $logArea = "Kidschurch";				
             $this->logevent($logType, $logValue, $logArea);
             return true;
         }
@@ -110,7 +108,7 @@ class groups extends kongreg8app{
             // Log the failure
             $logType = "Store Fail";
             $logValue = $_SESSION['Kusername']." failed editing a group ".db::escapechars($sql);
-            $logArea = "Groups";				
+            $logArea = "Kidschurch";				
             $this->logerror($logType, $logValue, $logArea);
             return "Could not update at this time - please try again";
         }
@@ -118,23 +116,23 @@ class groups extends kongreg8app{
     }
     
     /*
-     * Delete a group from the system
+     * Delete a kidschurch group from the system
      * 
      */
     public function groupDelete($groupid)
     {
-        $sql = "SELECT groupname FROM groups WHERE groupID='".db::escapechars($groupid)."'";
+        $sql = "SELECT groupname FROM kidschurchgroups WHERE groupID='".db::escapechars($groupid)."'";
         $result = db::returnrow($sql);
         $groupname = $result['groupname'];
         
-        $sql = "DELETE FROM groups WHERE groupID='".db::escapechars($groupid)."' LIMIT 1";
+        $sql = "DELETE FROM kidschurchgroups WHERE groupID='".db::escapechars($groupid)."' LIMIT 1";
         $result = db::execute($sql);
         
         if($result){
             // Log the activity
             $logType = "Delete";
             $logValue = $_SESSION['Kusername']." deleted a group, $groupname";
-            $logArea = "Groups";				
+            $logArea = "Kidschurch";				
             $this->logevent($logType, $logValue, $logArea);
             return true;
         }
@@ -142,20 +140,20 @@ class groups extends kongreg8app{
             // Log the failure
             $logType = "Store Fail";
             $logValue = $_SESSION['Kusername']." failed deleting a group ($groupname) ".db::escapechars($sql);
-            $logArea = "Groups";				
+            $logArea = "Kidschurch";				
             $this->logerror($logType, $logValue, $logArea);
             return false;
         }
     }
     
     /*
-     * View a group's information when given a group id 
+     * View a kidschurch group's information when given a group id 
      * 
      */
     public function groupView($groupid)
     {
         if(!empty($groupid)){
-            $sql = "SELECT * FROM groups WHERE groupID='".db::escapechars($groupid)."'";
+            $sql = "SELECT * FROM kidschurchgroups WHERE groupID='".db::escapechars($groupid)."'";
             $result = db::returnrow($sql);
 
             return $result;
@@ -201,7 +199,7 @@ class groups extends kongreg8app{
         // For each member you find, construct a link to select them as member controllers for the group
         foreach($result as $person){
             // Construct the a href entities for the people
-            $personlist .= "[ <a href=\"index.php?mid=300&add=true&groupname=$groupname&groupdescription=$groupdescription&leader=".$person['memberID']."\" 
+            $personlist .= "[ <a href=\"index.php?mid=400&add=true&groupname=$groupname&groupdescription=$groupdescription&leader=".$person['memberID']."\" 
                 title=\"".$person['address1']." ".$person['address2']." ".$person['email']."\" >" 
                     . $person['firstname']." ".$person['middlename']." ". $person['surname']."</a> ] ";
         }
@@ -217,7 +215,7 @@ class groups extends kongreg8app{
     public function groupIDtoname($groupID)
     {
         $groupID = db::escapechars($groupID);
-        $sql = "SELECT groupname FROM groups WHERE groupID='".$groupID."'";
+        $sql = "SELECT groupname FROM kidschurchgroups WHERE groupID='".$groupID."'";
         $result = db::returnrow($sql);
         return $result['groupname'];
         
@@ -225,7 +223,7 @@ class groups extends kongreg8app{
     
     
     /*
-     * Get the list of group members
+     * Get the list of kidschurch group members
      * 
      * 
      */
@@ -234,7 +232,7 @@ class groups extends kongreg8app{
         $groupID = db::escapechars($groupID);
         $m = db::escapechars($memberID);
         
-        $sql = "SELECT * FROM groupmembers JOIN churchmembers ON groupmembers.memberID = churchmembers.memberID WHERE groupmembers.groupID =  '" . $groupID . "'";
+        $sql = "SELECT * FROM kidschurchgroupmembers JOIN churchmembers ON kidschurchgroupmembers.memberID = churchmembers.memberID WHERE kidschurchgroupmembers.groupID =  '" . $groupID . "'";
         $result = db::returnallrows($sql);
         if(db::getnumrows($sql)>0){
             print "<table class=\"memberTable\"><tr><th>Firstname</th><th>Surname</th><th>Email</th><th>Action</th></tr>";
@@ -250,8 +248,8 @@ class groups extends kongreg8app{
                 print "<td>" . $groupmember['surname'] . "</td>";
                 print "<td>" . $groupmember['email'] . "</td>";
                 print "<td>
-                        <a href=\"index.php?mid=321&m=" . $groupmember['memberID'] . "&g=" . $groupID ."&action=remove\" class=\"delbutton\">Remove</a> / 
-                        <a href=\"index.php?mid=321&m=" . $groupmember['memberID'] . "&g=" . $groupID ."&action=setleader\" class=\"runbutton\">Set as Leader</a>
+                        <a href=\"index.php?mid=421&m=" . $groupmember['memberID'] . "&g=" . $groupID ."&action=remove\" class=\"delbutton\">Remove</a> / 
+                        <a href=\"index.php?mid=421&m=" . $groupmember['memberID'] . "&g=" . $groupID ."&action=setleader\" class=\"runbutton\">Set as Leader</a>
                         </td>";
                 print "</tr>";
             }
@@ -264,7 +262,7 @@ class groups extends kongreg8app{
     }
     
     /*
-     * Add members to a group
+     * Add members to a kidschurch group
      * 
      */
     public function addMemberToGroup($groupID, $memberID)
@@ -272,7 +270,7 @@ class groups extends kongreg8app{
         $groupID = db::escapechars($groupID);
         $memberID = db::escapechars($memberID);
         
-        $sql = "INSERT INTO groupmembers SET 
+        $sql = "INSERT INTO kidschurchgroupmembers SET 
                 groupID='" . $groupID . "', 
                 memberID='" . $memberID . "'
                 ";
@@ -281,7 +279,7 @@ class groups extends kongreg8app{
             // Log the activity
             $logType = "Insert";
             $logValue = $_SESSION['Kusername']." added a group member to groupID $groupID";
-            $logArea = "Groups";				
+            $logArea = "Kidschurch";				
             $this->logevent($logType, $logValue, $logArea);
             return true;
         }
@@ -289,7 +287,7 @@ class groups extends kongreg8app{
             // Log the failure
             $logType = "Store Fail";
             $logValue = $_SESSION['Kusername']." failed adding a group member ".db::escapechars($sql);
-            $logArea = "Groups";				
+            $logArea = "KidsChurch";				
             $this->logerror($logType, $logValue, $logArea);
             return false;
         }
@@ -297,7 +295,7 @@ class groups extends kongreg8app{
     }
     
     /*
-     * Remove a member from a group
+     * Remove a member from a kidschurch group
      * 
      */
     public function removeMemberFromGroup($groupID, $memberID)
@@ -305,7 +303,7 @@ class groups extends kongreg8app{
         $groupID = db::escapechars($groupID);
         $memberID = db::escapechars($memberID);
         
-        $sql = "DELETE FROM groupmembers 
+        $sql = "DELETE FROM kidschurchgroupmembers 
                 WHERE
                 groupID='" . $groupID . "'
                 AND
@@ -317,7 +315,7 @@ class groups extends kongreg8app{
             // Log the activity
             $logType = "Removal";
             $logValue = $_SESSION['Kusername']." removed a group member from groupID $groupID";
-            $logArea = "Groups";				
+            $logArea = "Kidschurch";				
             $this->logevent($logType, $logValue, $logArea);
             return true;
         }
@@ -325,7 +323,7 @@ class groups extends kongreg8app{
             // Log the failure
             $logType = "Removal Fail";
             $logValue = $_SESSION['Kusername']." failed removing a group member ".db::escapechars($sql);
-            $logArea = "Groups";				
+            $logArea = "Kidschurch";				
             $this->logerror($logType, $logValue, $logArea);
             return false;
         }
@@ -333,7 +331,7 @@ class groups extends kongreg8app{
     }
     
     /*
-     * Find a member to add to the 
+     * Find a member to add to the kidschurch group
      * 
      */
     public function findMemberToAdd($searchstring, $groupID)
@@ -365,7 +363,7 @@ class groups extends kongreg8app{
         // For each member you find, construct a link to select them as member controllers for the group
         foreach($result as $person){
             // Construct the a href entities for the people
-            $personlist .= "[ <a href=\"index.php?mid=321&action=add&g=" . $groupID . "&m=" . $person['memberID'] . "\" 
+            $personlist .= "[ <a href=\"index.php?mid=421&action=add&g=" . $groupID . "&m=" . $person['memberID'] . "\" 
                 title=\"".$person['address1']." ".$person['address2']." ".$person['email']."\" >" 
                     . $person['firstname']." ".$person['middlename']." ". $person['surname']."</a> ] ";
         }
@@ -375,7 +373,7 @@ class groups extends kongreg8app{
     }
     
     /*
-     * Function to change the leader of a group to the new value
+     * Function to change the leader of a kidschurch group to the new value
      * 
      */
     public function changeGroupLeader($groupID, $leaderID)
@@ -383,13 +381,13 @@ class groups extends kongreg8app{
         $groupID = db::escapechars($groupID);
         $leaderID = db::escapechars($leaderID);
         
-        $sql = "UPDATE groups SET groupLeader='".$leaderID."' WHERE groupID='".$groupID."' LIMIT 1";
+        $sql = "UPDATE kidschurchgroups SET groupLeader='".$leaderID."' WHERE groupID='".$groupID."' LIMIT 1";
         $result = db::execute($sql);
         if($result){
             // Log the activity
             $logType = "Modify";
             $logValue = $_SESSION['Kusername']." edited group, ".db::escapechars($groupname);
-            $logArea = "Groups";				
+            $logArea = "Kidschurch";				
             $this->logevent($logType, $logValue, $logArea);
             return true;
         }
@@ -397,7 +395,7 @@ class groups extends kongreg8app{
             // Log the failure
             $logType = "Modify Fail";
             $logValue = $_SESSION['Kusername']." failed editing a group ".db::escapechars($sql);
-            $logArea = "Groups";				
+            $logArea = "Kidschurch";				
             $this->logerror($logType, $logValue, $logArea);
             return false;
         }
@@ -442,8 +440,8 @@ class groups extends kongreg8app{
                 else{
                     print "<td>" . $this->groupIDtoname($template['groupID']) . "</td>";
                 }
-                print "<td><a href=\"index.php?mid=320&action=send&tid=" . $template['templateID'] . "\" class=\"runbutton\">Send</a> / 
-                        <a href=\"index.php?mid=320&action=remove&tid=" . $template['templateID'] . "\" class=\"delbutton\">Remove</a>  
+                print "<td><a href=\"index.php?mid=420&action=send&tid=" . $template['templateID'] . "\" class=\"runbutton\">Send</a> / 
+                        <a href=\"index.php?mid=420&action=remove&tid=" . $template['templateID'] . "\" class=\"delbutton\">Remove</a>  
                         </td>";
                 print "</tr>";
 
@@ -460,17 +458,17 @@ class groups extends kongreg8app{
     
     
     /*
-     * Group Select Dropdown
+     * Kidschurch Group Select Dropdown
      * 
      */
     public function groupselectdropdown($campus)
     {
         $campus = db::escapechars($campus);
         if($campus == "all"){
-            $sql = "SELECT groupname, groupID FROM groups ORDER BY groupname ASC";
+            $sql = "SELECT groupname, groupID FROM kidschurchgroups ORDER BY groupname ASC";
         }
         else{
-            $sql = "SELECT groupname, groupID FROM groups WHERE campusid='$campus' ORDER BY groupname ASC";
+            $sql = "SELECT groupname, groupID FROM kidschurchgroups WHERE campusid='$campus' ORDER BY groupname ASC";
         }
         $result = db::returnallrows($sql);
         
@@ -509,7 +507,7 @@ class groups extends kongreg8app{
             // Log the activity
             $logType = "Insert";
             $logValue = $_SESSION['Kusername']." created a new email template , $subject";
-            $logArea = "Groups";				
+            $logArea = "Kidschurch";				
             $this->logevent($logType, $logValue, $logArea);
             return true;
         }
@@ -517,7 +515,7 @@ class groups extends kongreg8app{
             // Log the failure
             $logType = "Store Fail";
             $logValue = $_SESSION['Kusername']." failed creating a new email template ".db::escapechars($sql);
-            $logArea = "Groups";				
+            $logArea = "Kidschurch";				
             $this->logerror($logType, $logValue, $logArea);
             return false;
         }
@@ -543,11 +541,11 @@ class groups extends kongreg8app{
         
         if($groupID == 0){
             // Sending to EVERY group, make sure you don't send duplicate copies to members tagged to different groups
-            $sql = "SELECT * FROM (groupmembers RIGHT JOIN churchmembers on groupmembers.memberID = churchmembers.memberID) GROUP BY groupmembers.memberID";
+            $sql = "SELECT * FROM (kidschurchgroupmembers RIGHT JOIN churchmembers on kidschurchgroupmembers.memberID = churchmembers.memberID) GROUP BY kidschurchgroupmembers.memberID";
         }
         else{
             // Sending to ONE group, 
-            $sql = "SELECT * FROM (groupmembers RIGHT JOIN churchmembers on groupmembers.memberID = churchmembers.memberID) WHERE groupmembers.groupID='".$groupID."'";
+            $sql = "SELECT * FROM (kidschurchgroupmembers RIGHT JOIN churchmembers on kidschurchgroupmembers.memberID = churchmembers.memberID) WHERE kidschurchgroupmembers.groupID='".$groupID."'";
         }
         $result = db::returnallrows($sql);
         // For each member we need to send an email to
