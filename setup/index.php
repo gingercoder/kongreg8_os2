@@ -12,6 +12,24 @@
 
 if($_POST['save'] == 1){
 
+    // Create the DB links, build the database and prepare the user account
+    
+    $mydbname = strip_tags(stripslashes(trim($_POST['dbname'])));
+    $mydbuser = strip_tags(stripslashes(trim($_POST['dbuser'])));
+    $mydbserver = strip_tags(stripslashes(trim($_POST['dbserver'])));
+    $mydbpass = strip_tags(stripslashes(trim($_POST['dbpassword'])));
+    $churchname = strip_tags(stripslashes(trim($_POST['churchname'])));
+    $appname = strip_tags(stripslashes(trim($_POST['kname'])));
+    $adminname = strip_tags(stripslashes(trim($_POST['adminname'])));
+    $adminpass = strip_tags(stripslashes(trim($_POST['adminpassword'])));
+    $adminemail = strip_tags(stripslashes(trim($_POST['adminemail'])));
+    $churchemail = strip_tags(stripslashes(trim($_POST['churchemail'])));
+    
+    if(($mydbname == "")||($mydbuser == "")||($adminname == "")||($adminpass == "")){
+                
+        print "<h1>Error!</h1><p>You did not provide core information necessary to build your system, please try again.</p>";
+    }
+    else{
     ?>
         <div class="contentBox">
         <h1>First-Run Set-up</h1>
@@ -20,14 +38,78 @@ if($_POST['save'] == 1){
             <strong>Database set-up</strong><br/>
             Creating your database
         </p>
+        <?php
+        // Create the DB Link
+            $dbdetails = "<?php \r\n\r\n// DB CONNECTION FILE\r\n\r\n";
+            
+            $dbdetails .= "\$dbuser = '".$mydbuser."';\r\n\$dbhost = '".$mydbserver."';\r\n\$dbpass = '".$mydbpass."';\r\n\$dbname = '".$mydbname."';\r\n";
+            $dbdetails .= "db::dbconnect(\$dbhost, \$dbuser, \$dbpass, \$dbname);\r\n?>";
+        
+            $path = "../application/db/connect.php";
+        
+            $fp = fopen($path,'w');
+                fwrite($fp,$dbdetails);
+            fclose($fp);
+        ?>
         <p>
             <strong>Creating user</strong><br/>
             Setting up your primary administration account
         </p>
+        <?php
+        // Insert the user into the system
+            require_once('../application/db/db.php');    
+            require_once('../application/db/connect.php');
+            
+            // open the sql file
+            $myfile = 'dbconstruct.sql';
+            
+            //load file
+                $commands = file_get_contents($myfile);
+
+                //delete comments
+                $lines = explode("\n",$commands);
+                $commands = '';
+                foreach($lines as $line){
+                    $line = trim($line);
+                    if( $line && (substr($line,0,2) != '--') ){
+                        $commands .= $line . "\n";
+                    }
+                }
+
+                //convert to array
+                $commands = explode(";", $commands);
+
+                //run commands
+                $total = $success = 0;
+                foreach($commands as $command){
+                    if(trim($command)){
+                        db::execute($command);
+                    }
+                }
+
+        ?>
         <p>
             <strong>Preparing your system</strong><br/>
             Setting up your system
         </p>
+        <?php
+        // Store the main settings
+        
+        // Create user account
+        $md5pass = md5($adminpass);
+        $sql = "INSERT INTO users SET firstname='System', surname='Admin', username='$adminname', password='$md5pass', userlevel='5', emailaddress='$adminemail', campus='all'";
+        $result = db::execute($sql);
+        // Update System settings
+        $sql = "UPDATE settings SET settingValue='$churchname' WHERE settingName='scrTitle'";
+        $result = db::execute($sql);
+        $sql = "UPDATE settings SET settingValue='$adminemail' WHERE settingName='mailRoot'";
+        $result = db::execute($sql);
+        $sql = "UPDATE settings SET settingValue='$churchemail' WHERE settingName='commsEmail'";
+        $result = db::execute($sql);
+        $sql = "UPDATE settings SET settingValue='$churchname' WHERE settingName='licensedto'";
+        $result = db::execute($sql);
+        
+        ?>
         
         </div>
         <div class="contentBox">
@@ -37,10 +119,11 @@ if($_POST['save'] == 1){
             Processing now complete - you can now log in using your primary administration account.
         </p>
         <p>
-        [ <a href="../index.php">Log me in now</a> ]
+        [ <a href="../index.php">Continue to log in</a> ]
         </p>
 
     <?php
+    }
 }
 else{
 ?>
@@ -51,7 +134,7 @@ else{
             <strong>Database set-up</strong><br/>
             Please enter some information about your database server and what you would like as your primary settings to get you started. If you don't know what your database 
             server is called or it's IP address, contact your server administrator. It is most likely called &quot;localhost&quot; 
-            but this may vary depending on your hosting provider.
+            but this may vary depending on your hosting provider.<br/>You will need to create or have a blank database ready and provide the name below.
         </p>
         <p>
             <strong>Administration Team</strong><br/>
@@ -78,6 +161,8 @@ else{
             <input type="hidden" name="save" id="save" value="1" />
             <label for="dbserver">DB Server</label>
             <input type="text" name="dbserver" id="dbserver" placeholder="localhost" />
+            <label for="dbname">DB Name</label>
+            <input type="text" name="dbname" id="dbname" />
             <label for="dbuser">DB User</label>
             <input type="text" name="dbuser" id="dbuser" />
             <label for="dbpassword">DB Password</label>
@@ -97,7 +182,7 @@ else{
             <input type="text" name="churchemail" id="churchemail" />
             
             <br/><br/>
-            <input type="submit" value="Save and Launch" />
+            <input type="submit" value="Install Now" />
         </form>
         </div>
         <div class="contentBox">

@@ -63,7 +63,7 @@ if($_GET['remove'] == 'true'){
         else{
             
             $toggleMessage = "<p class=\"confirm\">Are you SURE you want to remove the group $groupname ?
-                            <a href=\"index.php?mid=310&g=$groupid&remove=true&confirm=true\">Yes, I agree</a>
+                            <a href=\"index.php?mid=410&g=$groupid&remove=true&confirm=true\">Yes, I agree</a>
                             ";
         }
     }
