@@ -1008,3 +1008,12 @@ REPORTS CONTAINER AND OUTPUT INFORMATION
     border-bottom-left-radius: 35px;
     text-align: center;
 }
+
+/*
+* BIBLE FORMATTING
+*/
+.verseNumber{
+    font: 14pt arial, sans-serif;
+    color: #999;
+    margin: 0px 10px 10px 0px;
+}

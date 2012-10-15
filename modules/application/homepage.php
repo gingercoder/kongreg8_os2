@@ -52,7 +52,7 @@ else{
 <fieldset><legend>Kids Church</legend>
 <?php
 
-if($objKongreg8->checkAccessLevel('Kidschurch') == true){
+if($objKongreg8->checkAccessLevel('Kids Church') == true){
     ?>
     <a href="index.php?mid=400"><span class="iconSpan"><img src="images/icons/papers.png" alt="Group Control" title="Group Control"/><br/>Group Control</span></a>
     
@@ -99,13 +99,15 @@ else{
 <fieldset><legend>My Tools</legend>
 
     <a href="index.php?mid=600"><span class="iconSpan"><img src="images/icons/clock.png" alt="Remind Me" title="Remind Me"/><br/>Remind Me</span></a>
-<?php 
-/*
-*    <a href="index.php?mid=610"><span class="iconSpan"><img src="images/icons/book-open.png" alt="Bible Search" title="Bible Search"/><br/>Bible Search</span></a>
-*/
-?>
-    <a href="index.php?mid=505"><span class="iconSpan"><img src="images/icons/briefcase.png" alt="My Reports" title="My Reports"/><br/>My Reports</span></a>
 
+    <a href="index.php?mid=650"><span class="iconSpan"><img src="images/icons/book-open.png" alt="Bible Search" title="Bible Search"/><br/>Bible Search</span></a>
+<?php
+if($objKongreg8->checkAccessLevel('My Reports') == true){
+    ?>
+    <a href="index.php?mid=505"><span class="iconSpan"><img src="images/icons/briefcase.png" alt="My Reports" title="My Reports"/><br/>My Reports</span></a>
+<?php
+}
+?>
     <a href="index.php?mid=690"><span class="iconSpan"><img src="images/icons/bubble.png" alt="My Messages" title="My Messages"/><br/>My Messages</span></a>
 
         
@@ -118,29 +120,48 @@ else{
 <fieldset><legend>System</legend>
 <?php
 
-if($objKongreg8->checkAccessLevel('System') == true){
+if($objKongreg8->checkAccessLevel('User Control') == true){
     ?>
     <a href="index.php?mid=700"><span class="iconSpan"><img src="images/icons/users.png" alt="User Control" title="User Control"/><br/>User Control</span></a>
-
-    <a href="index.php?mid=240"><span class="iconSpan"><img src="images/icons/site-map.png" alt="Campus Control" title="Campus Control"/><br/>Campus Control</span></a>
-
-    <a href="index.php?mid=700"><span class="iconSpan"><img src="images/icons/drive-download.png" alt="Export Data" title="Export Data"/><br/>Export Data</span></a>
-
-    <a href="index.php?mid=720"><span class="iconSpan"><img src="images/icons/database.png" alt="Run Backup" title="Run Backup"/><br/>Run Backup</span></a>
-
-    <a href="index.php?mid=111"><span class="iconSpan"><img src="images/icons/software.png" alt="Software Info" title="Software Info"/><br/>Software Info</span></a>
-
-    <a href="index.php?mid=700"><span class="iconSpan"><img src="images/icons/puzzle.png" alt="Module Control" title="Module Control"/><br/>Module Control</span></a>
-
-    <a href="index.php?mid=999900"><span class="iconSpan"><img src="images/icons/wall.png" alt="Firewall" title="Firewall"/><br/>Firewall</span></a>
-
-    <a href="index.php?mid=999901"><span class="iconSpan"><img src="images/icons/shield.png" alt="I.D.S." title="I.D.S."/><br/>I.D.S.</span></a>
-
-    <a href="index.php?mid=900"><span class="iconSpan"><img src="images/icons/web.png" alt="Web Service" title="Web Service"/><br/>Web Service</span></a>
 <?php
 }
-else{
-    print "<p>You don't have access to this module, sorry.</p>";
+if($objKongreg8->checkAccessLevel('Campus Control') == true){
+    ?>
+    <a href="index.php?mid=240"><span class="iconSpan"><img src="images/icons/site-map.png" alt="Campus Control" title="Campus Control"/><br/>Campus Control</span></a>
+<?php
+}
+
+if($objKongreg8->checkAccessLevel('Export') == true){
+    ?>
+    <a href="index.php?mid=700"><span class="iconSpan"><img src="images/icons/drive-download.png" alt="Export Data" title="Export Data"/><br/>Export Data</span></a>
+<?php
+}
+
+if($objKongreg8->checkAccessLevel('Backup') == true){
+    ?>
+    <a href="index.php?mid=720"><span class="iconSpan"><img src="images/icons/database.png" alt="Run Backup" title="Run Backup"/><br/>Run Backup</span></a>
+<?php
+}
+?>
+    <a href="index.php?mid=111"><span class="iconSpan"><img src="images/icons/software.png" alt="Software Info" title="Software Info"/><br/>Software Info</span></a>
+<?php
+    if($objKongreg8->checkAccessLevel('Module Control') == true){
+    ?>
+    <a href="index.php?mid=700"><span class="iconSpan"><img src="images/icons/puzzle.png" alt="Module Control" title="Module Control"/><br/>Module Control</span></a>
+<?php
+}
+    if($objKongreg8->checkAccessLevel('Firewall') == true){
+    ?>
+    <a href="index.php?mid=999900"><span class="iconSpan"><img src="images/icons/wall.png" alt="Firewall" title="Firewall"/><br/>Firewall</span></a>
+<?php
+}
+?>
+    <a href="index.php?mid=999901"><span class="iconSpan"><img src="images/icons/shield.png" alt="I.D.S." title="I.D.S."/><br/>I.D.S.</span></a>
+<?php
+    if($objKongreg8->checkAccessLevel('Web Service') == true){
+    ?>
+    <a href="index.php?mid=900"><span class="iconSpan"><img src="images/icons/web.png" alt="Web Service" title="Web Service"/><br/>Web Service</span></a>
+<?php
 }
 ?>
 </fieldset>

@@ -477,3 +477,17 @@ CREATE TABLE IF NOT EXISTS `users` (
   `apikey` varchar(32) NOT NULL,
   PRIMARY KEY (`userID`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COMMENT='System Users' AUTO_INCREMENT=1 ;
+
+--
+-- Table structure for table `bible_nkj`
+--
+CREATE TABLE `bible_nkj` (
+  `booknumber` int(11) NOT NULL,
+  `bookname` varchar(50) collate latin1_general_ci NOT NULL,
+  `chapter` int(11) NOT NULL,
+  `verse` int(11) NOT NULL,
+  `passage` text collate latin1_general_ci NOT NULL,
+  KEY `booknumber` (`booknumber`),
+  KEY `chapter` (`chapter`),
+  KEY `verse` (`verse`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci COMMENT='New King James Bible';

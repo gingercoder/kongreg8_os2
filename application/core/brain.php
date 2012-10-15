@@ -176,6 +176,14 @@
             break;
         
         /*
+         *  BIBLE FEATURES
+         */
+        case "650":
+            // view bible information
+            require_once('application/bible/home.php');
+            break;
+        
+        /*
          * MY MESSAGES FEATURES SECTION
          * 
          */

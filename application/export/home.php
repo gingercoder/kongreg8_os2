@@ -3,6 +3,12 @@
 /*
  * Export Function
  */
+$checkuserlevel = $objKongreg8->checkAccessLevel('Export');
+if($checkuserlevel == false){
+    require_once ('failcodes/userlevel.html');
+    exit();
+}
+
 require_once('application/export/export.php');
 $objExport = new export();
 

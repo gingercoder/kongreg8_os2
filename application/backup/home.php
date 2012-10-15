@@ -3,6 +3,11 @@
 /*
  * Backup Launch System
  */
+$checkuserlevel = $objKongreg8->checkAccessLevel('Backup');
+if($checkuserlevel == false){
+    require_once ('failcodes/userlevel.html');
+    exit();
+}
 
 require_once('application/backup/backup.php');
 $objBackup = new backup();

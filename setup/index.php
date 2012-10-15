@@ -45,7 +45,7 @@ if($_POST['save'] == 1){
             $dbdetails .= "\$dbuser = '".$mydbuser."';\r\n\$dbhost = '".$mydbserver."';\r\n\$dbpass = '".$mydbpass."';\r\n\$dbname = '".$mydbname."';\r\n";
             $dbdetails .= "db::dbconnect(\$dbhost, \$dbuser, \$dbpass, \$dbname);\r\n?>";
         
-            $path = "../application/db/connect.php";
+            $path = "../application/db/test.php";
         
             $fp = fopen($path,'w');
                 fwrite($fp,$dbdetails);
@@ -58,12 +58,12 @@ if($_POST['save'] == 1){
         <?php
         // Insert the user into the system
             require_once('../application/db/db.php');    
-            require_once('../application/db/connect.php');
+            require_once('../application/db/test.php');
             
-            // open the sql file
-            $myfile = 'dbconstruct.sql';
-            
-            //load file
+                       
+            // Load SQL Function
+            function loadSQLintoDB($myfile){
+                //load file
                 $commands = file_get_contents($myfile);
 
                 //delete comments
@@ -86,7 +86,28 @@ if($_POST['save'] == 1){
                         db::execute($command);
                     }
                 }
+            }
+            print "<p>Loading primary DB...</p>";
+            // open the primary sql file
+            $myfile = 'dbconstruct.sql';
+            $loadPrimary = loadSQLintoDB($myfile);
+            print "<p>Primary System DB constructed</p>";
+            
+            print "<p>Loading Bible into DB...</p>";
+            $myfile = 'bible_nkj.csv';
+            $handle = fopen($myfile, "r");
+                while (!feof($handle)) {
+                    $data = fgetcsv($handle, 2048, ",");
 
+                    $sql = "INSERT INTO bible_nkj VALUES ('".db::escapechars($data[0])."','".db::escapechars($data[1])."','".db::escapechars($data[2])."','".db::escapechars($data[3])."','".db::escapechars($data[4])."')";
+                    db::execute($sql);
+                }
+            fclose($handle);
+            
+            
+            print "<p>Bible verses inserted</p>";
+            
+            
         ?>
         <p>
             <strong>Preparing your system</strong><br/>
@@ -117,6 +138,9 @@ if($_POST['save'] == 1){
         <p>
             <strong>Ready for you</strong><br/>
             Processing now complete - you can now log in using your primary administration account.
+        </p>
+        <p>
+            You should now delete your setup folder on your server.
         </p>
         <p>
         [ <a href="../index.php">Continue to log in</a> ]
@@ -156,6 +180,7 @@ else{
         </p>
         </div>
         <div class="contentBox">
+            <strong>Please ensure the application/db folder is write enabled (755 or 777) during the setup process.</strong><br/>
         <form name="setupscript" action="index.php" method="post">
             <h2>Database</h2>
             <input type="hidden" name="save" id="save" value="1" />

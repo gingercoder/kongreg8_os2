@@ -3,6 +3,12 @@
 /*
  * Group overview page
  */
+$checkuserlevel = $objKongreg8->checkAccessLevel('Kids Church');
+if($checkuserlevel == false){
+    require_once ('failcodes/userlevel.html');
+    exit();
+}
+
 
 require_once('application/kidschurch/kidschurch.php');
 $objKidschurch = new kidschurch();

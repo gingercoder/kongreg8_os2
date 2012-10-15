@@ -4,6 +4,12 @@
  * Group overview page
  */
 
+$checkuserlevel = $objKongreg8->checkAccessLevel('Groups');
+if($checkuserlevel == false){
+    require_once ('failcodes/userlevel.html');
+    exit();
+}
+
 require_once('application/groups/groups.php');
 $objGroup = new groups();
 
