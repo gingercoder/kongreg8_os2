@@ -566,6 +566,17 @@ class kidschurch extends kongreg8app{
         
     }
     
+    
+    
+    /*
+     * View Resource List
+     */
+    public function viewResources()
+    {
+        $sql = "SELECT * FROM kidschurchresources ORDER BY resourceName ASC";
+        $result = db::returnallrows($sql);
+        return $result;
+    }
 }
 
 ?>

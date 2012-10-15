@@ -134,7 +134,10 @@
             // View Group Members
             require_once ('application/kidschurch/viewMembers.php');
             break;
-        
+        case "430":
+            // Resources control
+            require_once ('application/kidschurch/resources.php');
+            break;
         
         /*
          * REPORTS FEATURES SECTION

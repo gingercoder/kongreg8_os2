@@ -45,7 +45,7 @@ if($_POST['save'] == 1){
             $dbdetails .= "\$dbuser = '".$mydbuser."';\r\n\$dbhost = '".$mydbserver."';\r\n\$dbpass = '".$mydbpass."';\r\n\$dbname = '".$mydbname."';\r\n";
             $dbdetails .= "db::dbconnect(\$dbhost, \$dbuser, \$dbpass, \$dbname);\r\n?>";
         
-            $path = "../application/db/test.php";
+            $path = "../application/db/connect.php";
         
             $fp = fopen($path,'w');
                 fwrite($fp,$dbdetails);
@@ -58,7 +58,7 @@ if($_POST['save'] == 1){
         <?php
         // Insert the user into the system
             require_once('../application/db/db.php');    
-            require_once('../application/db/test.php');
+            require_once('../application/db/connect.php');
             
                        
             // Load SQL Function
