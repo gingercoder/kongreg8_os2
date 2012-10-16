@@ -138,6 +138,12 @@
             // Resources control
             require_once ('application/kidschurch/resources.php');
             break;
+        case "431":
+            // Resources Edit
+            require_once ('application/kidschurch/resourcesedit.php');
+            break;
+        
+        
         
         /*
          * REPORTS FEATURES SECTION

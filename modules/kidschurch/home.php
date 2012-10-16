@@ -11,7 +11,7 @@ if(!empty($errorMsg)){
 ?>
 <div class="helpbox" id="helpbox">
     <a href="#" onClick="hidereminder('helpbox');">close help</a>
-    <?php print $objHelp->displayHelp('groups','0'); ?>
+    <?php print $objHelp->displayHelp('Kids Church','2'); ?>
 </div>
 <div class="contentBoxLeft">
     <h1>Kids Church Groups Overview</h1>

@@ -45,7 +45,9 @@ if(!empty($errorMsg)){
     <a name="10">&nbsp;</a><a href="#top">[ back to top ]</a>
     <h1>Web Service</h1>
     <?php print $objHelp->displayHelpSection('webservice'); ?>
-
+    <a name="10">&nbsp;</a><a href="#top">[ back to top ]</a>
+    <h1>Kids Church</h1>
+    <?php print $objHelp->displayHelpSection('Kids Church'); ?> 
 </div>
 <div class="contentBoxRight">
     <h1>Help</h1>
@@ -127,6 +129,15 @@ if(!empty($errorMsg)){
             <ol>
                 <li>Overview</li>
                 <li>Service Functions</li>
+            </ol>
+        </li>
+        <li><a href="#11">Kids Church</a>
+            <ol>
+                <li>Overview</li>
+                <li>Resource Management</li>
+                <li>Group Management</li>
+                <li>Plans</li>
+                <li>Registration</li>
             </ol>
         </li>
     </ol>

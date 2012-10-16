@@ -571,12 +571,125 @@ class kidschurch extends kongreg8app{
     /*
      * View Resource List
      */
-    public function viewResources()
+    public function viewResources($resourceid='')
     {
+        $resourceid = db::escapechars($resourceid);
+        
         $sql = "SELECT * FROM kidschurchresources ORDER BY resourceName ASC";
-        $result = db::returnallrows($sql);
+        $resources = db::returnallrows($sql);
+        if(count($resources) > 0){
+            $resourceOutput = "<table class=\"memberTable\"><tr><th>ID</th><th>Name</th><th>Description</th><th>Type</th><th>Quantity</th><th>Task</th></tr>";
+            foreach($resources as $resource){
+                if($resource['resourceID'] == $resourceid){
+                    $resourceOutput .= "<tr class=\"highlight\">";
+                }
+                else{
+                    $resourceOutput .= "<tr>";
+                }
+                $resourceOutput .= "<td>".$resource['resourceID']."</td>";
+                $resourceOutput .= "<td>".$resource['resourceName']."</td>";
+                $resourceOutput .= "<td>".$resource['resourceDescription']."</td>";
+                $resourceOutput .= "<td>".$resource['resourceType']."</td>";
+                $resourceOutput .= "<td>".$resource['resourceQuantity']."</td>";
+                $resourceOutput .= "<td>  
+                                        <a href=\"index.php?mid=431&action=edit&resourceID=".$resource['resourceID']."\" class=\"runbutton\">Edit</a>
+                                        <a href=\"index.php?mid=430&action=remove&resourceID=".$resource['resourceID']."\" class=\"delbutton\">Remove</a>
+                                    </td>";
+                $resourceOutput .= "<tr>";
+            }
+            $resourceOutput .= "</table>";
+        }
+        else{
+            $resourceOutput = "<p>There are no resources stored at present.</p>";
+        }
+        return $resourceOutput;
+    }
+    
+    /*
+     * Add a resource to the system
+     * 
+     */
+    public function addResource($resname, $resdesc, $restype, $resquantity)
+    {
+        $resname = db::escapechars($resname);
+        $resdesc = db::escapechars($resdesc);
+        $restype = db::escapechars($restype);
+        $resquantity = db::escapechars($resquantity);
+        
+        $sql = "INSERT INTO kidschurchresources SET
+                resourceName = '$resname',
+                resourceDescription = '$resdesc',
+                resourceType = '$restype',
+                resourceQuantity = '$resquantity'
+                ";
+        $result = db::execute($sql);
+        if($result){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    
+    /*
+     * Edit a resource in the system
+     * 
+     */
+    public function editResource($resname, $resdesc, $restype, $resquantity, $resID)
+    {
+        $resname = db::escapechars($resname);
+        $resdesc = db::escapechars($resdesc);
+        $restype = db::escapechars($restype);
+        $resquantity = db::escapechars($resquantity);
+        $resID = db::escapechars($resID);
+        
+        $sql = "UPDATE kidschurchresources SET
+                resourceName = '$resname',
+                resourceDescription = '$resdesc',
+                resourceType = '$restype',
+                resourceQuantity = '$resquantity'
+                WHERE
+                resourceID = '$resID'
+                LIMIT 1
+                ";
+        $result = db::execute($sql);
+        if($result){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    /*
+     * Remove a resource from the system
+     * 
+     */
+    public function removeResource($resourceID)
+    {
+        $resourceID = db::escapechars($resourceID);
+        $sql = "DELETE FROM kidschurchresources WHERE resourceID='$resourceID' LIMIT 1";
+        $result = db::execute($sql);
+        if($result){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    /*
+     * Get a specific resource
+     * 
+     */
+    public function getResource($resourceid)
+    {
+        $resourceid = db::escapechars($resourceid);
+        $sql = "SELECT * FROM kidschurchresources WHERE resourceID='$resourceid'";
+        $result = db::returnrow($sql);
         return $result;
     }
+    
 }
 
 ?>

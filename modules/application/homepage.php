@@ -61,8 +61,6 @@ if($objKongreg8->checkAccessLevel('Kids Church') == true){
     
     <a href="index.php?mid=430"><span class="iconSpan"><img src="images/icons/paper-clip.png" alt="Resources" title="Resources"/><br/>Resources</span></a>
 
-    <a href="index.php?mid=440"><span class="iconSpan"><img src="images/icons/game-pad.png" alt="Activity" title="Activity"/><br/>Activity</span></a>
-
     <a href="index.php?mid=450"><span class="iconSpan"><img src="images/icons/file-new.png" alt="Plans" title="Plans"/><br/>Plans</span></a>
 
     <a href="index.php?mid=460"><span class="iconSpan"><img src="images/icons/sign-in.png" alt="Registration" title="Registration"/><br/>Registration</span></a>
