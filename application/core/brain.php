@@ -18,6 +18,7 @@
     
     // run a session authentication check before allowing launch of a feature
     $authcheck = $objKongreg8->maintainauth();
+    
     if(($authcheck == 'auth') || ($authcheck == 'authing'))
     {
         $loadmodule = $objKongreg8->selectmodule();
@@ -28,6 +29,7 @@
     }
     else{
         $loadmodule = '';
+        
     }
     
     // work out what module should be pulled from the maintained list of modules

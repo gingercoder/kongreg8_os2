@@ -93,8 +93,9 @@ class kongreg8app{
         if (null === $key) {
             return $_SERVER;
         }
-
-        return (isset($_SERVER[$key])) ? $_SERVER[$key] : $default;
+        else{
+            return (isset($_SERVER[$key])) ? $_SERVER[$key] : $default;
+        }
     }
 
     /*
@@ -106,13 +107,13 @@ class kongreg8app{
         if ($this->getServer('HTTP_CLIENT_IP') != null){
             $ip = $this->getServer('HTTP_CLIENT_IP');
         }
-        else if ($checkProxy && $this->getServer('HTTP_X_FORWARDED_FOR') != null){
+        else if ($this->getServer('HTTP_X_FORWARDED_FOR') != null){
             $ip = $this->getServer('HTTP_X_FORWARDED_FOR');
         }
         else{
             $ip = $this->getServer('REMOTE_ADDR');
         }
-
+        
         return $ip;
     }
 

@@ -51,7 +51,9 @@ class firewall extends kongreg8app{
          * 
          */
         public function checkip(){
-            $localIP = str_replace('.', '', $this->addZeros($this->getIP()));
+            $myIP = $this->getIP();
+            $localIP = str_replace('.', '', $this->addZeros($myIP));
+            
             $sql = "SELECT * FROM kfirewall WHERE ipaddress >='$localIP' AND '$localIP' <= endaddress";
             $result = db::returnrow($sql);
             if($result){

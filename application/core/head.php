@@ -70,6 +70,8 @@ if(($_GET['action'] == "download")&&($_GET['area']=="backup")){
         
         <link rel="stylesheet" href="css/screen.css" media="screen" />
         <link rel="stylesheet" href="css/printer.css" media="print" />
+        <link rel="stylesheet" href="css/mobile.css" media="mobile" />
+        
         
         <meta name="robots" value="no-follow" />
         <meta name="description" value="Kongreg8 Church Member Database System" />

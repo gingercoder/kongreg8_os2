@@ -39,7 +39,7 @@ else{
     
     <?php
     $logType = "System Auth";
-                    $IPAddress = $_SERVER["REMOTE_ADDR"];
+                    $IPAddress = $objKongreg8->getIP();
                     $logValue = "Refused access to $IPAddress";
                     $logArea = "firewall";                 
                     $objKongreg8->logevent('$logType','$logValue','$logArea');
