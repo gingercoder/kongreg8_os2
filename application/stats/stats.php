@@ -53,7 +53,84 @@ class stats extends kongreg8app{
             
             
         }
-    
+        
+        /*
+         * Group breakdown bar chart 
+         * 
+         */
+        public function groupBarChart()
+        {
+            $returnData = "
+            function drawGroupBarChart() {
+
+            var data = new google.visualization.arrayToDataTable([
+            ['Group Name', 'Number of Members']";
+            
+            $sql = "SELECT * FROM (groups RIGHT JOIN campus on groups.campusID=campus.campusID) ORDER BY groupName ASC;";
+            $result = db::returnallrows($sql);
+            foreach($result as $group){
+                $sql2 = "SELECT * FROM groupmembers WHERE groupID='".$group['groupID']."'";
+                $numrows = db::getnumrows($sql2);
+                
+                $returnData .= ",\r\n\t['" . $group['groupname'] . " (". $group['campusName'] . ")', ".$numrows."]";
+            }
+            
+            $returnData .="]);
+
+            // Set chart options
+            var options = {title: 'Number of Members per Group',
+                            width: 'auto',
+                            height: '300',
+                            hAxis: {title: 'Groups', titleTextStyle: {color: 'Blue'}}
+                            };
+                            
+                var chart = new google.visualization.ColumnChart(document.getElementById('groupBarChart_div'));
+                chart.draw(data, options);
+            }
+            ";
+            
+            
+            return $returnData;
+        }
+        
+        
+        /*
+         * Gender Pie Chart breakdown
+         * 
+         */
+        public function genderPieChart()
+        {
+            $returnData = "
+            function drawGenderPieChart() {
+
+            var data = new google.visualization.arrayToDataTable([
+            ['Group Name', 'Number of Members']";
+            
+            $sql1 = "SELECT gender FROM churchmembers WHERE gender='m' ";
+            $sql2 = "SELECT gender FROM churchmembers WHERE gender='f' ";
+            
+            $males = db::getnumrows($sql1);
+            $females = db::getnumrows($sql2);
+            $returnData .= ",\r\n\t['Male', ".$males."]";
+            $returnData .= ",\r\n\t['Female', ".$females."]";
+            
+            $returnData .= "]);
+
+            // Set chart options
+            var options = {title: 'Gender breakdown cross-campus'
+                            };
+                            
+                var chart = new google.visualization.PieChart(document.getElementById('genderPieChart_div'));
+                chart.draw(data, options);
+            }
+            ";
+            
+            
+            return $returnData;
+        }
+        
+        
+        
 }
 
 ?>

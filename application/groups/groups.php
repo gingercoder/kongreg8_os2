@@ -15,7 +15,7 @@ class groups extends kongreg8app{
     public function viewGroups($groupid='')
     {
         $groupid = db::escapechars($groupid);
-        $sql = "SELECT * FROM groups ORDER BY groupname ASC";
+        $sql = "SELECT * FROM (groups RIGHT JOIN campus on groups.campusid=campus.campusID)ORDER BY groupname ASC";
         
         $result = db::returnallrows($sql);
         
@@ -27,6 +27,7 @@ class groups extends kongreg8app{
                     <th>Name</th>
                     <th>Description</th>
                     <th>Leader</th>
+                    <th>Campus</th>
                     <th>Action</th>
                     </tr>";
             foreach($result as $groupitem){
@@ -40,6 +41,7 @@ class groups extends kongreg8app{
                     <td>".$groupitem['groupname']."</td>
                     <td>".$groupitem['groupdescription']."</td>
                     <td>".$this->memberidtoname($groupitem['groupleader'])."</td>
+                    <td>".$groupitem['campusName']."</td>    
                     <td><a href=\"index.php?mid=321&g=".$groupitem['groupID']."\">View</a> /
                         <a href=\"index.php?mid=305&g=".$groupitem['groupID']."&edit=true\">Edit</a> / 
                     <a href=\"index.php?mid=310&g=".$groupitem['groupID']."&remove=true\">Remove</a> 
@@ -61,13 +63,14 @@ class groups extends kongreg8app{
      * Add a group to the system based on the given details
      * from the main home screen
      */
-    public function addGroup($groupname, $groupdescription, $groupleader)
+    public function addGroup($groupname, $groupdescription, $groupleader, $campus)
     {
         
         $sql = "INSERT INTO groups SET
                 groupname='".db::escapechars($groupname)."',
                 groupdescription='".db::escapechars($groupdescription)."',
-                groupleader='".db::escapechars($groupleader)."'
+                groupleader='".db::escapechars($groupleader)."',
+                campusid='".db::escapechars($campus)."'
                 ";
         $result = db::execute($sql);
         if($result){
@@ -87,12 +90,13 @@ class groups extends kongreg8app{
      * Edit / Update a group that exists in the system and store the new information
      * 
      */
-    public function editGroup($groupid, $groupname, $groupdescription, $groupleader)
+    public function editGroup($groupid, $groupname, $groupdescription, $groupleader, $campus)
     {
         $sql = "UPDATE groups SET 
                 groupname='".db::escapechars($groupname)."',
                 groupdescription='".db::escapechars($groupdescription)."',
-                groupleader='".db::escapechars($groupleader)."'
+                groupleader='".db::escapechars($groupleader)."',
+                campusid='".db::escapechars($campus)."'
                 WHERE
                 groupID='".db::escapechars($groupid)."'
                 ";
@@ -171,11 +175,12 @@ class groups extends kongreg8app{
      * List of leaders to verify from
      * 
      */
-    public function verifyGroupLeader($leadername, $groupname, $groupdescription)
+    public function verifyGroupLeader($leadername, $groupname, $groupdescription, $campus)
     {
         $leader = db::escapechars($leadername);
         $groupname = db::escapechars($groupname);
         $groupdescription = db::escapechars($groupdescription);
+        $campus = db::escapechars($campus);
         
         // Search for the leader and create the search construct from members table
         
@@ -201,7 +206,7 @@ class groups extends kongreg8app{
         // For each member you find, construct a link to select them as member controllers for the group
         foreach($result as $person){
             // Construct the a href entities for the people
-            $personlist .= "[ <a href=\"index.php?mid=300&add=true&groupname=$groupname&groupdescription=$groupdescription&leader=".$person['memberID']."\" 
+            $personlist .= "[ <a href=\"index.php?mid=300&add=true&groupname=$groupname&groupdescription=$groupdescription&leader=".$person['memberID']."&campus=$campus\" 
                 title=\"".$person['address1']." ".$person['address2']." ".$person['email']."\" >" 
                     . $person['firstname']." ".$person['middlename']." ". $person['surname']."</a> ] ";
         }
@@ -340,6 +345,7 @@ class groups extends kongreg8app{
     {
         $groupperson = db::escapechars($searchstring);
         $groupID = db::escapechars($groupID);
+        
         
         // Search for the leader and create the search construct from members table
         

@@ -164,6 +164,10 @@
             require_once('application/reports/authstats.php');
             break;
         
+        case "530":
+            require_once('application/stats/livestats.php');
+            break;
+        
         /*
          * REMINDER FEATURES SECTION
          */
@@ -224,7 +228,13 @@
             require_once('application/backup/home.php');
             break;
         
-        
+        /*
+         * MODULE CONTROL
+         */
+        case "800":
+            // Module Control Function
+            require_once('application/core/modulecontrol.php');
+            break;
         
         /*
          * WEB SERVICE FEATURES
@@ -235,6 +245,18 @@
             require_once('application/webservice/home.php');
             break;
         
+        case "909":
+            // Settings page
+            require_once('application/admin/settings.php');
+            break;
+        
+        /*
+         * USER CONTROL MECHANISM
+         */
+        case "950":
+            // View all users
+            require_once('application/admin/users.php');
+            break;
         
         /*
          * SEARCH FEATURES SECTION

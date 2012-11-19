@@ -41,6 +41,21 @@ if(!empty($errorMsg)){
         <textarea id="groupdescription" name="groupdescription"></textarea>
         <label for="groupleader">Group Leader</label>
         <input type="text" name="groupleader" id="groupleader" />
+        
+        <?php
+        if($_SESSION['Kcampus'] == "all"){
+            ?>
+            <label for="campus">Campus</label>
+            <?php  
+            $dropdown = $objKongreg8->viewCampusDropdown();
+            print $dropdown;
+        }
+        else{
+            ?>
+            <input type="hidden" name="campus" id="campus" value="<?php print $_SESSION['Kcampus']; ?>" />
+            <?php
+        }
+        ?>
         <label for="submit">&nbsp;</label>
         <input type="submit" value="Create" />
     </form>

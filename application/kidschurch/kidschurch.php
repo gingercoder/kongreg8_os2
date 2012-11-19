@@ -61,12 +61,13 @@ class kidschurch extends kongreg8app{
      * Add a kidschurch group to the system based on the given details
      * from the main home screen
      */
-    public function addGroup($groupname, $groupdescription, $groupleader)
+    public function addGroup($groupname, $groupdescription, $groupleader, $campus)
     {
         $sql = "INSERT INTO kidschurchgroups SET
                 groupname='".db::escapechars($groupname)."',
                 groupdescription='".db::escapechars($groupdescription)."',
-                groupleader='".db::escapechars($groupleader)."'
+                groupleader='".db::escapechars($groupleader)."',
+                campusid='".db::escapechars($campus)."'
                 ";
         $result = db::execute($sql);
         if($result){
@@ -85,12 +86,13 @@ class kidschurch extends kongreg8app{
      * Edit / Update a kidschurch group that exists in the system and store the new information
      * 
      */
-    public function editGroup($groupid, $groupname, $groupdescription, $groupleader)
+    public function editGroup($groupid, $groupname, $groupdescription, $groupleader, $campus)
     {
         $sql = "UPDATE kidschurchgroups SET 
                 groupname='".db::escapechars($groupname)."',
                 groupdescription='".db::escapechars($groupdescription)."',
-                groupleader='".db::escapechars($groupleader)."'
+                groupleader='".db::escapechars($groupleader)."',
+                campusid='".db::escapechars($campus)."'
                 WHERE
                 groupID='".db::escapechars($groupid)."'
                 ";
@@ -169,11 +171,12 @@ class kidschurch extends kongreg8app{
      * List of leaders to verify from
      * 
      */
-    public function verifyGroupLeader($leadername, $groupname, $groupdescription)
+    public function verifyGroupLeader($leadername, $groupname, $groupdescription, $campus)
     {
         $leader = db::escapechars($leadername);
         $groupname = db::escapechars($groupname);
         $groupdescription = db::escapechars($groupdescription);
+        $campus = db::escapechars($campus);
         
         // Search for the leader and create the search construct from members table
         
@@ -199,7 +202,7 @@ class kidschurch extends kongreg8app{
         // For each member you find, construct a link to select them as member controllers for the group
         foreach($result as $person){
             // Construct the a href entities for the people
-            $personlist .= "[ <a href=\"index.php?mid=400&add=true&groupname=$groupname&groupdescription=$groupdescription&leader=".$person['memberID']."\" 
+            $personlist .= "[ <a href=\"index.php?mid=400&add=true&groupname=$groupname&groupdescription=$groupdescription&campus=$campus&leader=".$person['memberID']."\" 
                 title=\"".$person['address1']." ".$person['address2']." ".$person['email']."\" >" 
                     . $person['firstname']." ".$person['middlename']." ". $person['surname']."</a> ] ";
         }

@@ -17,8 +17,8 @@ if(!empty($errorMsg)){
     <h1>About</h1>
     <?php print $objHelp->displayHelpSection('about');?>
     <a name="2">&nbsp;</a><a href="#top">[ back to top ]</a>
-    <h1>Control Panel</h1>
-    <?php print $objHelp->displayHelpSection('controlpanel'); ?>
+    <h1>System Control</h1>
+    <?php print $objHelp->displayHelpSection('users'); ?>
     <a name="3">&nbsp;</a><a href="#top">[ back to top ]</a>
     <h1>Campus</h1>
     <?php print $objHelp->displayHelpSection('campus'); ?>
@@ -63,12 +63,10 @@ if(!empty($errorMsg)){
                 <li>Developers</li>
             </ol>
         </li>
-        <li><a href="#2">Control Panel</a>
+        <li><a href="#2">System Control</a>
             <ol>
-                <li>Main Screen</li>
-                <li>Activating Functions</li>
-                <li>User Levels</li>
-                <li>Statistics</li>
+                <li>Users</li>
+                <li>Module Control</li>
             </ol>
         </li>
         <li><a href="#3">Campus</a>

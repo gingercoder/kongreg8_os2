@@ -120,7 +120,7 @@ if($objKongreg8->checkAccessLevel('My Reports') == true){
 
 if($objKongreg8->checkAccessLevel('User Control') == true){
     ?>
-    <a href="index.php?mid=700"><span class="iconSpan"><img src="images/icons/users.png" alt="User Control" title="User Control"/><br/>User Control</span></a>
+    <a href="index.php?mid=950"><span class="iconSpan"><img src="images/icons/users.png" alt="User Control" title="User Control"/><br/>User Control</span></a>
 <?php
 }
 if($objKongreg8->checkAccessLevel('Campus Control') == true){
@@ -145,7 +145,7 @@ if($objKongreg8->checkAccessLevel('Backup') == true){
 <?php
     if($objKongreg8->checkAccessLevel('Module Control') == true){
     ?>
-    <a href="index.php?mid=700"><span class="iconSpan"><img src="images/icons/puzzle.png" alt="Module Control" title="Module Control"/><br/>Module Control</span></a>
+    <a href="index.php?mid=800"><span class="iconSpan"><img src="images/icons/puzzle.png" alt="Module Control" title="Module Control"/><br/>Module Control</span></a>
 <?php
 }
     if($objKongreg8->checkAccessLevel('Firewall') == true){
@@ -161,7 +161,15 @@ if($objKongreg8->checkAccessLevel('Backup') == true){
     <a href="index.php?mid=900"><span class="iconSpan"><img src="images/icons/web.png" alt="Web Service" title="Web Service"/><br/>Web Service</span></a>
 <?php
 }
+
+    if($objKongreg8->checkAccessLevel('Settings') == true){
 ?>
+
+    <a href="index.php?mid=909"><span class="iconSpan"><img src="images/icons/computer.png" alt="Settings" title="Settings"/><br/>Settings</span></a>
+<?php
+    }     
+?>
+
 </fieldset>
 
 <span class="clearSpan">&nbsp;</span>

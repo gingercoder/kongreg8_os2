@@ -84,8 +84,38 @@ class kongreg8app{
         return $module;
     }
     
-    
-    
+    /*
+     * Get server string data
+     * 
+     */
+    public function getServer($key = null, $default = null)
+    {
+        if (null === $key) {
+            return $_SERVER;
+        }
+
+        return (isset($_SERVER[$key])) ? $_SERVER[$key] : $default;
+    }
+
+    /*
+     * Get IP Address
+     * 
+     */
+    public function getIP()
+    {
+        if ($this->getServer('HTTP_CLIENT_IP') != null){
+            $ip = $this->getServer('HTTP_CLIENT_IP');
+        }
+        else if ($checkProxy && $this->getServer('HTTP_X_FORWARDED_FOR') != null){
+            $ip = $this->getServer('HTTP_X_FORWARDED_FOR');
+        }
+        else{
+            $ip = $this->getServer('REMOTE_ADDR');
+        }
+
+        return $ip;
+    }
+
     
     /*
      * 
@@ -137,7 +167,7 @@ class kongreg8app{
 
                     // Log the activity
                     $logType = "System Auth";
-                    $IPAddress = $_SERVER["REMOTE_ADDR"];
+                    $IPAddress = $this->getIP();
                     $logValue = "$username Successful sign in from $IPAddress";
                     $logArea = "Auth";
                     
@@ -152,7 +182,7 @@ class kongreg8app{
                 {
                     // Log the activity
                     $logType = "System Auth";
-                    $IPAddress = $_SERVER["REMOTE_ADDR"];
+                    $IPAddress = $this->getIP();
                     $logValue = "$username Failed sign in from $IPAddress";
                     $logArea = "Auth";
                    
@@ -169,7 +199,7 @@ class kongreg8app{
                  // Couldn't find the username in the database
                  // Log the activity
                  $logType = "System Auth";
-                 $IPAddress = $_SERVER["REMOTE_ADDR"];
+                 $IPAddress = $this->getIP();
                  $logValue = "$username Failed sign in from $IPAddress";
                  $logArea = "Auth";
                  
@@ -696,6 +726,240 @@ class kongreg8app{
         }
         
     }
+    
+    
+    /*
+     * User Control Mechanism
+     * View System Users
+     */
+    public function displayUsers()
+    {
+        $sql = "SELECT * FROM users ORDER BY userlevel DESC";
+        $result = db::returnallrows($sql);
+        if(db::getnumrows($sql)>0){
+            $output = "<table class=\"firewalltable\"><tr><th>Username</th><th>Surname</th><th>Firstname</th><th>User Level</th><th>Action</th></tr>";
+            foreach($result as $user){
+                
+                $output .= "<tr>";
+                $output .= "<td>".$user['username']."</td>";
+                $output .= "<td>".$user['surname']."</td>";
+                $output .= "<td>".$user['firstname']."</td>";
+                $output .= "<td>".$user['userlevel']."</td>";
+                $output .= "<td><a href=\"index.php?mid=950&action=edit&u=".$user['userID']."\" class=\"runbutton\">Edit</a>
+                            <a href=\"index.php?mid=950&action=remove&u=".$user['userID']."\" class=\"delbutton\">Delete</a>
+                            </td>";
+                $output .= "</tr>";
+                
+            }
+            $output .= "</table>";
+        }
+        else{
+            $output = "<p>There are no users to list</p>";
+        }
+        return $output;
+    }
+    
+    /*
+     * User Control Mechanism
+     * Add a system user
+     */
+    public function addUser($username, $password, $firstname, $surname, $userlevel, $campus, $emailaddress)
+    {
+        $username = db::escapechars($username);
+        $firstname = db::escapechars($firstname);
+        $surname = db::escapechars($surname);
+        $userlevel = db::escapechars($userlevel);
+        $password = md5(db::escapechars($password));
+        $campus = db::escapechars($campus);
+        $emailaddress = db::escapechars($emailaddress);
+        
+        // Verify there isn't a duplicate username
+        $sql = "SELECT * FROM users WHERE username='$username'";
+        $exists = 0;
+        $exists = db::getnumrows($sql);
+        if($exists == 0){
+            $sql = "INSERT INTO users SET 
+                    username='$username',
+                    firstname='$firstname',
+                    surname='$surname',
+                    password='$password',
+                    userlevel='$userlevel',
+                    emailaddress='$emailaddress',
+                    campus='$campus'
+                    ";
+            $result = db::execute($sql);
+            if($result){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return 'username already exists';
+        }
+    }
+    
+    /*
+     * Remove a user from the system
+     * 
+     */
+    public function removeUser($userid){
+        $userid = db::escapechars($userid);
+        
+        if($userid !=""){
+            $sql = "DELETE FROM users WHERE userID='$userid' LIMIT 1";
+            $result = db::execute($sql);
+            if($result){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
+    
+    
+    /*
+     * Campus Drop Down list for various areas
+     * 
+     */
+    public function viewCampusDropdown()
+    {
+            $campuses = "";
+            $sql = "SELECT * FROM campus ORDER BY campusName ASC";
+            $result = db::returnallrows($sql);
+            if(db::getNumRows($sql)>0){
+                $campuses = "<select name=\"campus\" id=\"campus\">";
+                foreach($result as $campus){
+                    $campuses .= "<option value='".$campus['campusid']."'>".$campus['campusName']."</option>";
+                }
+                $campuses .= "</select>";
+            }
+            return $campuses;
+
+     }
+        
+        
+        
+        
+    /*
+     * Settings Form to view and modify the settings
+     * 
+     */
+    public function displaySettingsForm()
+    {
+        $sql = "SELECT * FROM settings";
+        $result = db::returnallrows($sql);
+        if(db::getnumrows($sql) >0){
+            $returndata .= "<form name=\"settings\" action=\"index.php\" method=\"post\">";
+            $returndata .= "<table class=\"reportsTable\">";
+            foreach($result as $setting){
+                $returndata .=  "<tr>";
+                $returndata .= "<td>".$setting['settingName'];
+                $returndata .= "<input type=\"hidden\" name=\"settingname[]\" id=\"settingname[]\" value=\"".$setting['settingName']."\">";
+                $returndata .= "<td><input type=\"text\" name=\"settingvalue[]\" id=\"settingvalue[]\" value=\"".$setting['settingValue']."\"></td>";
+                $returndata .= "</tr>";
+            }
+            $returndata .= "<tr><td><input type=\"submit\" value=\"Save\"></td></tr>";
+            $returndata .= "</table>";
+            $returndata .= "<input type=\"hidden\" name=\"mid\" id=\"mid\" value=\"909\">";
+            $returndata .= "<input type=\"hidden\" name=\"save\" id=\"save\" value=\"true\">";
+            $returndata .= "</form>";
+            echo $returndata;
+        }
+        else{
+            echo "<p>Settings not found!!</p>";
+        }
+        return;
+    }
+    
+    /*
+     * Settings Update from the form
+     * 
+     */
+    public function updateSettings($settingname, $settingvalue)
+    {
+        // For each of the post settings, update the values
+        $error = 0;
+        for($x=0; $x<=count($settingname); $x++){
+            $sql = "UPDATE settings SET settingValue='".db::escapechars($settingvalue[$x])."' WHERE settingName='".db::escapechars($settingname[$x])."' LIMIT 1";
+            $update = db::execute($sql);
+            if(!$update){
+                $error = 1;
+            }
+        }
+        if($error == 1){
+            return false;
+        }
+        else{
+            return true;
+        }
+        
+    }
+    
+    
+    /*
+     * Module Control 
+     * Allows the setting of different access levels to modules
+     * 
+     */
+    public function displayModulesForm()
+    {
+        $sql = "SELECT * FROM kmodules";
+        $result = db::returnallrows($sql);
+        if(db::getnumrows($sql) >0){
+            $returndata .= "<form name=\"settings\" action=\"index.php\" method=\"post\">";
+            $returndata .= "<table class=\"reportsTable\">";
+            $returndata .= "<tr><th>Module</th><th>Minimum Access Level</th></tr>";
+            foreach($result as $module){
+                $returndata .=  "<tr>";
+                $returndata .= "<td>".$module['moduleName'];
+                $returndata .= "<input type=\"hidden\" name=\"modulename[]\" id=\"modulename[]\" value=\"".$module['moduleName']."\">";
+                $returndata .= "<td><input type=\"text\" name=\"modulevalue[]\" id=\"modulevalue[]\" value=\"".$module['userlevel']."\"></td>";
+                $returndata .= "</tr>";
+            }
+            $returndata .= "<tr><td><input type=\"submit\" value=\"Save\"></td></tr>";
+            $returndata .= "</table>";
+            $returndata .= "<input type=\"hidden\" name=\"mid\" id=\"mid\" value=\"800\">";
+            $returndata .= "<input type=\"hidden\" name=\"save\" id=\"save\" value=\"true\">";
+            $returndata .= "</form>";
+            echo $returndata;
+        }
+        else{
+            echo "<p>Modules not found!!</p>";
+        }
+        return;
+    }
+    
+    /*
+     * Settings Update from the form
+     * 
+     */
+    public function updateModules($modulename, $modulevalue)
+    {
+        // For each of the post settings, update the values
+        $error = 0;
+        for($x=0; $x<=count($modulename); $x++){
+            $sql = "UPDATE kmodules SET userlevel='".db::escapechars($modulevalue[$x])."' WHERE moduleName='".db::escapechars($modulename[$x])."' LIMIT 1";
+            $update = db::execute($sql);
+            if(!$update){
+                $error = 1;
+            }
+        }
+        if($error == 1){
+            return false;
+        }
+        else{
+            return true;
+        }
+        
+    }
+    
+    
 }
 
 ?>

@@ -86,4 +86,14 @@ if(($_GET['action'] == "download")&&($_GET['area']=="backup")){
             }
         </script>
         
+        
+        <?php
+            if(($_GET['mid'] == 530) || ($_POST['mid'] == 530)){
+                require_once('application/stats/stats.php');
+                $objStats = new stats();
+                require_once('application/stats/googleGraphScript.php');
+            }
+        ?>
+        
+
     </head>

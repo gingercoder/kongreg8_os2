@@ -7,7 +7,7 @@
  * Pizza Box Software
  * 
  * Primary web service for the Kongreg8 system - requires API key to be available and the service to be switched ON
- * 
+ * Firewall operates on the web service API to increase security levels.
  */
 
 /*
