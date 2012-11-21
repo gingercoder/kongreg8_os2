@@ -1017,3 +1017,21 @@ REPORTS CONTAINER AND OUTPUT INFORMATION
     color: #999;
     margin: 0px 10px 10px 0px;
 }
+
+/*
+* LIST ITEMS IN ULs
+*/
+.itemList{
+    display: block;
+    bullet-style: none;
+    list-style: none;
+    text-align: left;
+    
+}
+.itemList li{
+    padding: 4px;
+    height: 25px;
+}
+.itemList li:hover{
+    background-color: #6699cc;
+}

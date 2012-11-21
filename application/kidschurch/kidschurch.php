@@ -693,6 +693,165 @@ class kidschurch extends kongreg8app{
         return $result;
     }
     
+    /*
+     * 
+     * 
+     */
+    public function findMember($searchString, $campus)
+    {
+        $searchString = db::escapechars($searchString);
+        $campus = db::escapechars($campus);
+        
+        $sql = "SELECT * FROM churchmembers WHERE ";
+        
+        $splitSearch = split(' ',trim($searchString));
+        if(count($splitSearch) >= 1){
+            $sql .="firstname LIKE '%".$splitSearch[0]."%' ";
+                    
+            if(count($splitSearch) > 2){      
+                $sql .= "AND middlename LIKE '%".$splitSearch[1]."%'
+                        AND surname LIKE '%".$splitSearch[2]."%') ";
+            }
+            if(count($splitSearch) == 2){
+                $sql .= " AND surname LIKE '%".$splitSearch[1]."%' ";
+            }
+                    
+        }
+        if($campus != 'all'){
+            $sql .= " AND campus='$campus'";
+        }
+        
+        $result = db::returnallrows($sql);
+        $personlist = "";
+        
+        // For each member you find, construct a link to select them as member controllers for the group
+        foreach($result as $person){
+            // Construct the a href entities for the people
+            $personlist .= "<option value=\"".$person['memberID']."\">" . $person['firstname']." ".$person['middlename']." ". $person['surname']."</option>\r\t";
+        }
+        
+        return $personlist;
+        
+    }
+    
+    /*
+     * Function to sign children in to kids church
+     * 
+     */
+    public function signChildIn($memberid, $groupid, $parentid)
+    {
+        $memberid = db::escapechars($memberid);
+        $groupid = db::escapechars($groupid);
+        $parentid = db::escapechars($parentid);
+        
+        $sql = "INSERT INTO kidschurchregister SET
+                childid = '".$memberid."',
+                userid = '".$this->usernametoid($_SESSION['Kusername'])."',
+                kidschurchgroupid='$groupid',
+                parentid='".$parentid."',
+                timein=NOW()
+                ";
+        
+        $result = db::execute($sql); 
+        if($result){
+            return true;
+        }
+        else{
+            return false;
+        }
+        
+    }
+    
+    
+    /*
+     * Function to sign children out of kids church
+     * 
+     */
+    public function signChildOut($memberid, $groupid, $parentid)
+    {
+        $memberid = db::escapechars($memberid);
+        $groupid = db::escapechars($groupid);
+        $parentid = db::escapechars($parentid);
+        
+        $sql = "INSERT INTO kidschurchregister SET
+                childid = '".$memberid."',
+                userid = '".$this->usernametoid($_SESSION['Kusername'])."',
+                kidschurchgroupid='$groupid',
+                parentid='".$parentid."',
+                timeout=NOW()
+                ";
+        
+        $result = db::execute($sql); 
+        if($result){
+            return true;
+        }
+        else{
+            return false;
+        }
+        
+    }
+    
+    
+    /*
+     * Function to provide a list of all children signed in 
+     * grouped by the kids church group
+     */
+    public function displaySignedIn()
+    {
+        $sql = "SELECT * FROM kidschurchregister WHERE timeout IS NULL";
+        if(db::getnumrows($sql) > 0){
+            print "<p>There are ".db::getnumrows($sql)." children currently signed-in.</p>";
+            $result = db::returnallrows($sql);
+            $outputtable = "<ul class=\"itemList\">";
+            
+            foreach($result as $child){
+                $sql2 = "SELECT * FROM kidschurchgroups WHERE groupID='".$child['kidschurchgroupid']."'";
+                $result2 = db::returnrow($sql2);
+                $sql3 = "SELECT firstname, surname FROM churchmembers WHERE memberID='".$child['childid']."'";
+                $result3 = db::returnrow($sql3);
+                $outputtable .= "<li>&lt;<strong> " . $child['registerid']. " </strong>&gt; " . $result3['firstname'] . " " . $result3['surname'] . " in ". $result2['groupname'] . "  [ <a href=\"index.php?mid=460&function=signout&person=".$child['childid']."&rid=".$child['registerid']."\">Sign Out</a> ]</li>";
+                
+            }
+            
+            $outputtable .= "</ul>";
+        }
+        else{
+            print "<p class=\"confirm\">There are no children currently signed-in.</p>";
+        }
+        print $outputtable;
+    }
+    
+    /*
+     * Function to display the historic registers for a given date
+     * 
+     */
+    public function displayHistoricRegister($registerDate)
+    {
+        $registerDate = db::escapechars($registerDate);
+        
+        $sql = "SELECT * FROM kidschurchregister WHERE timein LIKE '$registerDate%'";
+        if(db::getnumrows($sql) > 0){
+            $result = db::returnallrows($sql);
+            print "<h2>Register for $registerDate</h2>";
+            $outputtable = "<ul class=\"itemList\">";
+            
+            foreach($result as $child){
+                $sql2 = "SELECT * FROM kidschurchgroups WHERE groupID='".$child['kidschurchgroupid']."'";
+                $result2 = db::returnrow($sql2);
+                $sql3 = "SELECT firstname, surname FROM churchmembers WHERE memberID='".$child['childid']."'";
+                $result3 = db::returnrow($sql3);
+                $outputtable .= "<li>&lt;<strong> " . $child['registerid']. " </strong>&gt; " . $result3['firstname'] . " " . $result3['surname'] . " in ". $result2['groupname'] . " in at " . $child['timein'] . " out at " . $child['timeout'] . "</li>";
+                
+            }
+            
+            $outputtable .= "</ul>";
+        }
+        else{
+            print "<p class=\"confirm\">There are no children currently signed-in.</p>";
+        }
+        print $outputtable;
+    }
+    
 }
 
 ?>

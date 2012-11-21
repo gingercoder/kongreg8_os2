@@ -144,8 +144,10 @@
             // Resources Edit
             require_once ('application/kidschurch/resourcesedit.php');
             break;
-        
-        
+        case "460":
+            // Register for Kids Church
+            require_once('application/kidschurch/register.php');
+            break;
         
         /*
          * REPORTS FEATURES SECTION
