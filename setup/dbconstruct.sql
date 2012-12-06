@@ -183,8 +183,6 @@ CREATE TABLE IF NOT EXISTS `helpsystem` (
 -- Dumping data for table `helpsystem`
 --
 
-
-
 INSERT INTO `helpsystem` (`helpID`, `helpTitle`, `helpContent`, `helpArea`, `sectionID`) VALUES
 (1, 'Adding a Member', 'To add a member to the system, enter the information into the boxes provided. You should at least insert the: first name; surname; member status and campus for the new member. Once you have entered your information click on the SAVE DETAILS button at the right of your screen to store the details in Kongreg8.', 'members', 1),
 (2, 'Reminders Overview', 'The reminder system is your own personal time-based notepad. It allows you to create a message that will remind you on a specific date. Think of it as a mini diary that will remind you of events or meetings whenever you sign in to Kongreg8. You can toggle the reminder pane visibility with the on/off switches - you will still see a reminder on screen for the next ten reminders you have stored. Reminders will disappear once you pass the date of your item. Use the Add Reminder pane to create a new entry in the system. Select your date and time from the drop-down boxes, give your reminder a title and a message and click the CREATE button to save your new item in the system.', 'reminders', 1),
@@ -217,7 +215,9 @@ INSERT INTO `helpsystem` (`helpID`, `helpTitle`, `helpContent`, `helpArea`, `sec
 (29, 'User Accounts', 'Each user on the system can have a specified user level. Depending on the options set in the Module Configuration module, this allows users limited access to functions across the system. To add a new user to the system, enter their details on the right of this screen and click the ADD button. To edit or remove users, click on the button next to their user account details on the list below.', 'users', 0),
 (30, 'Live Statistics', 'The live statistics module provides an instant representation of the data stored in your Kongreg8 system. This is not pre-cached copy but derived from data as you view this page.', 'Statistics', 0),
 (31, 'System Settings', 'The system settings control the main environment and allow the modification of notification email addresses. Changing settings here directly effect the system and should be changed carefully. Modify the value of the setting you wish to be updated and click on the Save button to store your new setting.', 'Settings', 0),
-(32, 'Module Settings', 'Each module can have an access level associated with it to limit availability to certain user levels. Be careful to ensure that you provide enough access for your users and consider the roles you want to generate for the user levels. Change the value in the box corresponding to the module and click on the Save button to write your changes to the system. Settings will be effective immediately.', 'Modules', 0);
+(32, 'Module Settings', 'Each module can have an access level associated with it to limit availability to certain user levels. Be careful to ensure that you provide enough access for your users and consider the roles you want to generate for the user levels. Change the value in the box corresponding to the module and click on the Save button to write your changes to the system. Settings will be effective immediately.', 'Modules', 0),
+(33, 'Kids Church Registration', 'The Kids Church Registration module allows you to sign children in and out of the kids church and produce registers for any date. Click on the button for the activity you want to undertake', 'Kids Church', 3);
+
 
 
 --
@@ -485,6 +485,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   `apikey` varchar(32) NOT NULL,
   PRIMARY KEY (`userID`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COMMENT='System Users' AUTO_INCREMENT=1 ;
+
+
+--
+-- Table structure for table `useraccess`
+--
+
+CREATE TABLE IF NOT EXISTS `useraccess` (
+  `userID` int(11) NOT NULL,
+  `moduleName` varchar(50) NOT NULL,
+  KEY `userid` (`userID`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='User Access Lists';
+
 
 --
 -- Table structure for table `bible_nkj`
