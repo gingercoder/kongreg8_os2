@@ -213,7 +213,7 @@ if($objKongreg8->checkAccessLevel('Backup') == true){
 <h1>system status messages</h1>
 <p>
     Last Log in: <?php print $objKongreg8->lastlogin($_SESSION['Kusername']); ?><br/>
-    Current IP: <?php print $_SERVER['REMOTE_ADDR']; ?><br/>
+    Current IP: <?php print $objKongreg8->getIP(); ?><br/>
 </p>
     <?php
         $objKongreg8->getErrorOverview();

@@ -239,6 +239,11 @@
             // Module Control Function
             require_once('application/core/modulecontrol.php');
             break;
+        case "801":
+            // Set access privileges
+            require_once('application/core/moduleprivs.php');
+            break;
+        
         
         /*
          * WEB SERVICE FEATURES

@@ -120,6 +120,8 @@ if($_POST['save'] == 1){
         $md5pass = md5($adminpass);
         $sql = "INSERT INTO users SET firstname='System', surname='Admin', username='$adminname', password='$md5pass', userlevel='5', emailaddress='$adminemail', campus='all'";
         $result = db::execute($sql);
+        $userID = db::getlastid();
+        
         // Update System settings
         $sql = "UPDATE settings SET settingValue='$churchname' WHERE settingName='scrTitle'";
         $result = db::execute($sql);
@@ -129,6 +131,14 @@ if($_POST['save'] == 1){
         $result = db::execute($sql);
         $sql = "UPDATE settings SET settingValue='$churchname' WHERE settingName='licensedto'";
         $result = db::execute($sql);
+        
+        // Set access privs for the new super user
+        $sql = "SELECT * FROM kmodules";
+        $result = db::returnallrows($sql);
+        foreach($result as $module){
+            $sql2 = "INSERT INTO useraccess SET userID='".$userID."', moduleName='".$module['moduleName']."'";
+            db::execute($sql2);
+        }
         
         ?>
         
@@ -140,10 +150,10 @@ if($_POST['save'] == 1){
             Processing now complete - you can now log in using your primary administration account.
         </p>
         <p>
-            You should now delete your setup folder on your server.
+            <strong>You should now delete your setup folder on your server to ensure security of your new system.</strong>
         </p>
         <p>
-        [ <a href="../index.php">Continue to log in</a> ]
+        [ <a href="../index.php">Continue to log in window</a> ]
         </p>
 
     <?php

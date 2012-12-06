@@ -100,7 +100,7 @@ class kongreg8app{
 
     /*
      * Get IP Address
-     * 
+     * (Please note that Kongreg8 uses IPv4 format for IP addresses) 
      */
     public function getIP()
     {
@@ -442,23 +442,139 @@ class kongreg8app{
         public function checkAccessLevel($modulename){
             
             $modulename = db::escapechars($modulename);
-            $userid =$this->usernametoid($_SESSION['Kusername']);
-            $sql = "SELECT * FROM kmodules WHERE moduleName = '$modulename'";
+            $userid = $this->usernametoid($_SESSION['Kusername']);
+            $sql = "SELECT * FROM useraccess WHERE moduleName = '$modulename' AND userID='".$userid."'";
             $result = db::returnrow($sql);
             $moduleuserlevel = $result['userlevel'];
-            
-            $userlevel = $_SESSION['Kulevel'];
-                if($userlevel >= $moduleuserlevel){
-                    
+
+               if($result['userID'] == $userid){
                     return true;
                 }
                 else{
-                    
                     return false;
                 }
             
-            
         }
+        
+        /*
+         * Show Module User Access - A list of access to modules for each user
+         * Displays access to modules
+         */
+        public function showModuleUserAccess()
+        {
+            $response = "<table class=\"memberTable\"><tr><th>UserName</th><th>Level</th><th>Modules</th><th>&nbsp;</th></tr>";
+            
+            $sql = "SELECT * FROM users ORDER BY surname ASC, firstname ASC";
+            $result = db::returnallrows($sql);
+            foreach($result as $user){
+                $response .= "<tr>";
+                $response .= "<td>" . $user['username'] . "</td>";
+                $response .= "<td>" . $user['userlevel'] . "</td>";
+                $sysmodulesql = "SELECT * FROM useraccess WHERE userID='".$user['userID']."' ORDER BY moduleName ASC";
+                $sysmodule = db::returnallrows($sysmodulesql);
+                $response .= "<td>";
+                $firsttoggle = 0;
+                foreach($sysmodule as $module){
+                    if($firsttoggle == 1){
+                        $response .= " , ";
+                    }
+                    $response .= $module['moduleName'];
+                    $firsttoggle = 1;
+                }
+                $response .= "</td>";
+                $response .= "<td><a href=\"index.php?mid=801&u=".$user['userID']."\">Edit</a></td>";
+                $response .= "</tr>";
+            }
+            $response .= "</table>";
+            return $response;
+        }
+        
+        /*
+         * Get module access form for a specific user
+         * 
+         * 
+         */
+        public function createModuleAccessForm($userid)
+        {
+            $response = "<form name=\"moduleprivs\" action=\"index.php\" method=\"post\">
+                        <input type=\"hidden\" name=\"u\" id=\"u\" value=\"$userid\" />
+                        <input type=\"hidden\" name=\"mid\" id=\"mid\" value=\"801\" />
+                        <input type=\"hidden\" name=\"function\" id=\"function\" value=\"update\" />";
+            
+            $sql = "SELECT * FROM kmodules ORDER BY moduleName ASC";
+            $result = db::returnallrows($sql);
+            foreach($result as $module){
+                $response .="<p><input type=\"hidden\" name=\"moduleName[]\" id=\"moduleName[]\" value=\"".$module['moduleName']."\" />
+                <label>".$module['moduleName']."</label>
+                <select name=\"accessVal[]\" id=\"accessVal[]\">";
+                    $sql = "SELECT * FROM useraccess WHERE userID='".$userid."' AND moduleName='".$module['moduleName']."'";
+                    $numrows = 0;
+                    $numrows = db::getnumrows($sql);
+                    if($numrows >0){
+                        $response .="<option value=\"1\" default>Access</option>                  
+                                    <option value=\"0\">No Access</option>";
+                    }
+                    else{
+                        $response .="<option value=\"0\" default>No Access</option>                    
+                                    <option value=\"1\">Access</option>";
+                    }
+                $response .="</select>
+                </p>
+                ";
+            }
+            
+            $response .= "<input type=\"submit\" value=\"Save Changes\" />";
+            $response .= "</form>";
+            
+            return $response;
+        }
+        
+        /*
+         * Update User module access privs
+         * for each of the incomming modules
+         */
+        public function updateModuleAccess($userid, $moduleName, $accessVal)
+        {
+            $errorFlag = 0;
+            // Loop through all incomming objects
+            for($i=0; $i<count($moduleName); $i++){
+                if($moduleName[$i] != ""){
+                    // Check the type of access
+                    if($accessVal[$i] == '0'){
+                        // Remove access from the module
+                        $sql = "DELETE FROM useraccess WHERE userID='".db::escapechars($userid)."' AND moduleName='".db::escapechars($moduleName[$i])."'";
+                        $rundelete = db::execute($sql);
+                        if(!$rundelete){
+                            $errorFlag = 1;
+                        }
+                    }
+                    else{
+                        // Access granted to module - check if access already granted
+                        if($accessVal[$i] == '1'){
+                            $sql = "SELECT * FROM useraccess WHERE userID='".db::escapechars($userid)."' AND moduleName='".db::escapechars($moduleName[$i])."'";
+                            $numrows = 0;
+                            $numrows = db::getnumrows($sql);
+                            // if no existing acces, run the insert
+                            if($numrows == 0){
+                                $insertsql = "INSERT INTO useraccess SET userID='".$userid."', moduleName='".$moduleName[$i]."'";
+                                $runinsert = db::execute($insertsql);
+                                if(!$runinsert){
+                                    $errorFlag = 1;
+                                }
+                            }
+                        }
+                    }
+                } 
+            }
+            // return to called area
+            if($errorFlag == 0){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        
         
         /*
         * Generate Date and Time field input boxes for any forms requiring them
@@ -621,7 +737,7 @@ class kongreg8app{
          * 
          * Function to check for htaccess files in correct locations
          * Creates the files if they do not exist and warns the user
-         * 
+         * Used to secure folders from direct access by web users
          */
         public function checkhtaccess()
         {
@@ -790,6 +906,18 @@ class kongreg8app{
                     ";
             $result = db::execute($sql);
             if($result){
+                // Insert all the privs for the user in the useraccess table
+                $lastid = db::getlastid();
+                $modulesql = "SELECT * FROM kmodules";
+                $item = db::returnallrows($modulesql);
+                // for each module in the system, enter access if your level is greater than or equal to default levels
+                foreach($item as $module){
+                    if($module['userlevel'] >= $userlevel){
+                        $sql = "INSERT INTO useraccess SET userID='".$lastid."', moduleName='".$module['moduleName']."'";
+                        $privinsert = db::execute($sql);
+                    }
+                }
+                
                 return true;
             }
             else{
@@ -812,6 +940,8 @@ class kongreg8app{
             $sql = "DELETE FROM users WHERE userID='$userid' LIMIT 1";
             $result = db::execute($sql);
             if($result){
+                $sql = "DELETE FROM useraccess WHERE userID='$userid'";
+                $result = db::execute($sql);
                 return true;
             }
             else{

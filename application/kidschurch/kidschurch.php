@@ -809,7 +809,7 @@ class kidschurch extends kongreg8app{
                 $result2 = db::returnrow($sql2);
                 $sql3 = "SELECT firstname, surname FROM churchmembers WHERE memberID='".$child['childid']."'";
                 $result3 = db::returnrow($sql3);
-                $outputtable .= "<li>&lt;<strong> " . $child['registerid']. " </strong>&gt; " . $result3['firstname'] . " " . $result3['surname'] . " in ". $result2['groupname'] . "  [ <a href=\"index.php?mid=460&function=signout&person=".$child['childid']."&rid=".$child['registerid']."\">Sign Out</a> ]</li>";
+                $outputtable .= "<li>&lt;<strong> " . $child['registerid']. " </strong>&gt; " . $result3['firstname'] . " " . $result3['surname'] . " in ". $result2['groupname'] . "  [ <a href=\"index.php?mid=460&function=signout&person=".$child['childid']."&rid=".$child['registerid']."&stage=1\">Sign Out</a> ]</li>";
                 
             }
             
@@ -852,6 +852,23 @@ class kidschurch extends kongreg8app{
         print $outputtable;
     }
     
+    /*
+     * Function to retrieve the parent info
+     * 
+     */
+    public function getParentInfo($memberID)
+    {
+        $memberID = db::escapechars($memberID);
+        
+        $sql = "SELECT prefix, firstname, surname, address1, address2, postcode FROM churchmembers WHERE memberID='$memberID'";
+        $result = db::returnrow($sql);
+        if($result){
+            return $result['prefix']." ".$result['firstname'].$result['surname']." , ".$result['address1']." ".$result['address2']." ".$result['postcode'];
+        }
+        else{
+            return "Cannot find parent member information";
+        }
+    }
 }
 
 ?>
