@@ -17,6 +17,9 @@
     if($verse !=""){
         print $verse;
     }
+    else{
+        print "<img src=\"images/bibleopen.png\" alt=\"Open Bible\" title=\"Select book and verse to view\" />";
+    }
     ?>
 </div>
 
