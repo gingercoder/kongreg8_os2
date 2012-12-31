@@ -5,7 +5,7 @@
  * If passed certain variables, undertake the tasks as necessary
  * 
  */
-$checkuserlevel = $objKongreg8->checkAccessLevel('My Reminders');
+$checkuserlevel = $objKongreg8->checkAccessLevel('Remind Me');
 if($checkuserlevel == false){
     require_once ('failcodes/userlevel.html');
     exit();

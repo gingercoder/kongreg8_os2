@@ -3,6 +3,11 @@
 /*
  * Edit a reminder
  */
+$checkuserlevel = $objKongreg8->checkAccessLevel('Remind Me');
+if($checkuserlevel == false){
+    require_once ('failcodes/userlevel.html');
+    exit();
+}
 
 if($_POST['store'] == 'true'){
     

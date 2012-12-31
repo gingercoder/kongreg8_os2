@@ -292,8 +292,11 @@ CREATE TABLE IF NOT EXISTS `kidschurchplans` (
   `activityDate` date DEFAULT NULL,
   `materialsNeeded` text,
   `consentRequired` char(3) DEFAULT NULL,
-  PRIMARY KEY (`planID`)
+  `campusid` int(11) NOT NULL,
+  PRIMARY KEY (`planID`),
+  KEY `campusid` (`campusid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COMMENT='Kids Church Activities plan' AUTO_INCREMENT=1 ;
+
 
 -- --------------------------------------------------------
 

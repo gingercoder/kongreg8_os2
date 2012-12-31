@@ -869,6 +869,36 @@ class kidschurch extends kongreg8app{
             return "Cannot find parent member information";
         }
     }
+    
+    /*
+     * Function to display all plans stored in the system
+     * 
+     */
+    public function showPlans($campusid)
+    {
+        $sql = "SELECT * FROM kidschurchplans ";
+        if($campusid !='all'){
+            $sql .= "WHERE campusid='".db::escapechars($campusid)."' ";
+        }
+        $sql .= "ORDER BY activityDate ASC";
+        $result = db::returnallrows($sql);
+        $return = "<table class=\"reportTable\"><tr><th>Date</th><th>Title</th><th>Action</th></tr>";
+        foreach($result as $plan){
+            $return .= "<tr>";
+            $return .= "<td>".$plan['activityDate']."</td>";
+            $return .= "<td>".$plan['activityTitle']."</td>";
+            $return .= "<td>
+                            <a href=\"index.php?mid=450&action=sdf&p=".$plan['planID']."\">Edit</a>
+                            <a href=\"index.php?mid=450&action=sdf&p=".$plan['planID']."\">Delete</a>
+                        </td>";
+            $return .= "</tr>";
+        }
+        $return .= "</table>";
+        
+        return $return;
+    }
+    
+    
 }
 
 ?>

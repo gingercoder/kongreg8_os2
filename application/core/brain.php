@@ -144,6 +144,10 @@
             // Resources Edit
             require_once ('application/kidschurch/resourcesedit.php');
             break;
+        case "450":
+            // Plans Control
+            require_once('application/kidschurch/plans.php');
+            break;
         case "460":
             // Register for Kids Church
             require_once('application/kidschurch/register.php');
