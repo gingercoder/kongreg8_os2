@@ -20,7 +20,7 @@ if(($_POST['add'] == 'true')||($_GET['add'] == 'true')){
     if((!empty($_POST['groupname']))&&(!empty($_POST['groupdescription']))&&(!empty($_POST['groupleader']))){
         // Check who they want as the leader from the leader search box
         
-        $leaderlist = $objGroup->verifyGroupLeader($_POST['groupleader'], $_POST['groupname'], $_POST['groupdescription']);
+        $leaderlist = $objGroup->verifyGroupLeader($_POST['groupleader'], $_POST['groupname'], $_POST['groupdescription'], $_POST['campus']);
         
         $toggleMessage = "<p class=\"confirm\">Please select the correct leader from your search criteria:<br/>$leaderlist</p>";
         
@@ -28,8 +28,8 @@ if(($_POST['add'] == 'true')||($_GET['add'] == 'true')){
     elseif((!empty($_GET['groupname'])) && (!empty($_GET['groupdescription'])) && (!empty($_GET['leader']))){
         // leader selected so add the group to the system
         
-        $addgroup = $objGroup->addGroup($_GET['groupname'], $_GET['groupdescription'], $_GET['leader']);
-        if($addgroup != 'false'){
+        $addgroup = $objGroup->addGroup($_GET['groupname'], $_GET['groupdescription'], $_GET['leader'] ,$_GET['campus']);
+        if($addgroup != false){
             // Group added so reflect this
             $toggleMessage = "<p class=\"updated\">Your group has been added to the system.</p>";
             
