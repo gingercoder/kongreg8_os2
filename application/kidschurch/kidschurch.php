@@ -882,20 +882,20 @@ class kidschurch extends kongreg8app{
         }
         $sql .= "ORDER BY activityDate ASC";
         $result = db::returnallrows($sql);
-        $return = "<table class=\"reportTable\"><tr><th>Date</th><th>Title</th><th>Action</th></tr>";
+        $returndata = "<table class=\"reportTable\"><tr><th>Date</th><th>Title</th><th>Action</th></tr>";
         foreach($result as $plan){
-            $return .= "<tr>";
-            $return .= "<td>".$plan['activityDate']."</td>";
-            $return .= "<td>".$plan['activityTitle']."</td>";
-            $return .= "<td>
+            $returndata .= "<tr>";
+            $returndata .= "<td>".$plan['activityDate']."</td>";
+            $returndata .= "<td>".$plan['activityTitle']."</td>";
+            $returndata .= "<td>
                             <a href=\"index.php?mid=450&action=sdf&p=".$plan['planID']."\">Edit</a>
                             <a href=\"index.php?mid=450&action=sdf&p=".$plan['planID']."\">Delete</a>
                         </td>";
-            $return .= "</tr>";
+            $returndata .= "</tr>";
         }
-        $return .= "</table>";
+        $returndata .= "</table>";
         
-        return $return;
+        return $returndata;
     }
     
     

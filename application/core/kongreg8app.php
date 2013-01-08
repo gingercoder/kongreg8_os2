@@ -955,6 +955,94 @@ class kongreg8app{
     
     
     /*
+     * Create Edit a User Form
+     * 
+     */
+    public function editUserForm($userID)
+    {
+        $sql = "SELECT * FROM users WHERE userID='".db::escapechars($userID)."'";
+        $userinfo = db::returnrow($sql);
+        
+        $formoutput = "
+        <form name=\"adduser\" action=\"index.php\" method=\"post\" >
+            <input type=\"hidden\" name=\"mid\" id=\"mid\" value=\"950\" />
+            <input type=\"hidden\" name=\"action\" id=\"action\" value=\"edit\" />
+            <input type=\"hidden\" name=\"save\" id=\"save\" value=\"true\" />
+            <input type=\"hidden\" name=\"u\" id=\"u\" value=\"".$userinfo['userID']."\" />
+            <label for=\"uname\">Username:</label>
+            <input type=\"text\" name=\"uname\" id=\"uname\" value=\"".$userinfo['username']."\" />
+            <label for=\"fname\">First name:</label>
+            <input type=\"text\" name=\"fname\" id=\"fname\" value=\"".$userinfo['firstname']."\" />
+            <label for=\"sname\">Surname:</label>
+            <input type=\"text\" name=\"sname\" id=\"sname\" value=\"".$userinfo['surname']."\" />
+            <label for=\"pword1\">Password:</label>
+            <input type=\"password\" name=\"pword1\" id=\"pword1\" />
+            <label for=\"pword2\">Verify:</label>
+            <input type=\"password\" name=\"pword2\" id=\"pword2\" />
+            <label for=\"userlevel\">User level:</label>
+            <select name=\"userlevel\">
+                <option default value=\"".$userinfo['userlevel']."\">Current (".$userinfo['userlevel'].")</option>
+                <option value=\"1\">1 (lowest)</option>
+                <option value=\"2\">2</option>
+                <option value=\"3\">3</option>
+                <option value=\"4\">4</option>
+                <option value=\"5\">5 (sys admin)</option>
+            </select>
+            <label for=\"email\">Email Address:</label>
+            <input type=\"text\" name=\"email\" id=\"email\" value=\"".$userinfo['emailaddress']."\" />
+            <label for=\"campus\">Campus: </label>
+            <select name=\"campus\" id=\"campus\">
+                <option value=\"".$userinfo['campus']."\">Current (".$userinfo['campus'].")</option>
+                <option value=\"all\">All</option>";
+                 
+        $formoutput .= memberControl::getCampusList();
+            
+        $formoutput .="</select>
+            <label for=\"submit\">&nbsp;</label>
+            <input type=\"submit\" name=\"submit\" id=\"submit\" value=\"Save\" />
+        </form>";
+        
+        return $formoutput;
+    }
+    
+    /*
+     * Save Edited user information
+     */
+    public function editUser($userID, $username, $firstname, $surname, $password='', $userlevel, $email, $campus)
+    {
+        $userID = db::escapechars($userID);
+        $username = db::escapechars($username);
+        $firstname = db::escapechars($firstname);
+        $surname = db::escapechars($surname);
+        $password = db::escapechars($password);
+        $userlevel = db::escapechars($userlevel);
+        $email = db::escapechars($email);
+        $campus = db::escapechars($campus);
+        
+        $sql = "UPDATE users SET
+                username = \"".$username."\",
+                firstname = \"".$firstname."\",
+                surname = \"".$surname."\",
+                userlevel = \"".$userlevel."\",
+                emailaddress = \"".$email."\",
+                campus = \"".$campus."\"";
+        if($password !=""){
+            $sql .= ", password=\"".md5($password)."\"";
+        }
+        
+        $sql .= " WHERE userID=\"".$userID."\" LIMIT 1";
+        
+        $result = db::execute($sql);
+        if($result){
+            return true;
+        }
+        else{
+            return false;
+        }
+                
+    }
+    
+    /*
      * Campus Drop Down list for various areas
      * 
      */
