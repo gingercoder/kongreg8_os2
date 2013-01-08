@@ -361,6 +361,28 @@ CREATE TABLE IF NOT EXISTS `kmodules` (
   KEY `moduleName` (`moduleName`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci COMMENT='Module Information';
 
+
+INSERT INTO `kmodules` (`moduleName`, `moduleVersion`, `moduleAuthor`, `userlevel`) VALUES
+('Members', '2.0.1', 'Rick Trotter', 1),
+('Groups', '2.0.1', 'Rick Trotter', 2),
+('Firewall', '1.0', 'Rick Trotter', 5),
+('Help System', '1.0', 'Rick Trotter', 1),
+('Reports', '2.0.1', 'Rick Trotter', 3),
+('My Reports', '1.0', 'Rick Trotter', 3),
+('Statistics', '2.0.1', 'Rick Trotter', 3),
+('Remind Me', '1.0', 'Rick Trotter', 1),
+('Search', '1.0', 'Rick Trotter', 3),
+('IDS', '2.0.1', 'Rick Trotter', 5),
+('Web Service', '2.0.1', 'Rick Trotter', 5),
+('User Control', '2.0.1', 'Rick Trotter', 5),
+('Campus Control', '1.0', 'Rick Trotter', 5),
+('Export', '2.0.1', 'Rick Trotter', 5),
+('Backup', '2.0.1', 'Rick Trotter', 5),
+('Kids Church', '2.0.1', 'Rick Trotter', 3),
+('Module Control', '1.0', 'Rick Trotter', 5),
+('Bible', '1.0', 'Rick Trotter', 1);
+
+
 -- --------------------------------------------------------
 
 --

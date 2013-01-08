@@ -195,27 +195,28 @@ else{
             <h2>Database</h2>
             <input type="hidden" name="save" id="save" value="1" />
             <label for="dbserver">DB Server</label>
-            <input type="text" name="dbserver" id="dbserver" placeholder="localhost" />
+            <input type="text" name="dbserver" id="dbserver" placeholder="localhost" />*
             <label for="dbname">DB Name</label>
-            <input type="text" name="dbname" id="dbname" />
+            <input type="text" name="dbname" id="dbname" />*
             <label for="dbuser">DB User</label>
-            <input type="text" name="dbuser" id="dbuser" />
+            <input type="text" name="dbuser" id="dbuser" />*
             <label for="dbpassword">DB Password</label>
-            <input type="text" name="dbpassword" id="dbpassword" />
+            <input type="text" name="dbpassword" id="dbpassword" />*
             <h2>Application Name and Settings</h2>
             <label for="churchname">Church Name</label>
             <input type="text" name="churchname" id="churchname" />
             <label for="kname">Kongreg8 Application Name</label>
             <input type="text" name="kname" id="kname" placeholder="Kongreg8 OS2"/>
             <label for="adminname">Primary Admin User Name</label>
-            <input type="text" name="adminname" id="adminname" placeholder="kadmin" />
+            <input type="text" name="adminname" id="adminname" placeholder="kadmin" />*
             <label for="adminpassword">Primary Admin Password</label>
-            <input type="password" name="adminpassword" id="adminpassword" />
+            <input type="password" name="adminpassword" id="adminpassword" />*
             <label for="adminname">Primary Admin User Email</label>
-            <input type="text" name="adminemail" id="adminemail" />
+            <input type="text" name="adminemail" id="adminemail" />*
             <label for="churchemail">church contact email address</label>
-            <input type="text" name="churchemail" id="churchemail" />
-            
+            <input type="text" name="churchemail" id="churchemail" />*
+            <br/>
+            <strong>* Please ensure you enter correct values for these fields - essential to be able to log in correctly</strong>
             <br/><br/>
             <input type="submit" value="Install Now" />
         </form>
