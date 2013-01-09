@@ -80,6 +80,27 @@ if($_GET['remove'] == 'true'){
 }
 
 
+if($_GET['action'] == 'send'){
+    
+    $tid = $_GET['tid'];
+        
+    if(!empty($tid)){
+
+        if($objGroup->sendEmailCampaign($tid) == 'true'){
+                $toggleMessage = "<p class=\"updated\">Email Campaign Sent.</a>";
+        }
+        else{
+            
+            $errorMsg = "Could not send the campaign at this time, please try again.";
+        }
+    }
+    else{
+        $errorMsg = "<p class=\"confirm\">No Template ID passed - cannot continue.</p>";
+        
+    }
+}
+
+
 require_once('modules/groups/home.php');
 
 ?>

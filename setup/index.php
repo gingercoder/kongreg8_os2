@@ -93,20 +93,6 @@ if($_POST['save'] == 1){
             $loadPrimary = loadSQLintoDB($myfile);
             print "<p>Primary System DB constructed</p>";
             
-            print "<p>Loading Bible into DB...</p>";
-            $myfile = 'bible_nkj.csv';
-            $handle = fopen($myfile, "r");
-                while (!feof($handle)) {
-                    $data = fgetcsv($handle, 2048, ",");
-
-                    $sql = "INSERT INTO bible_nkj VALUES ('".db::escapechars($data[0])."','".db::escapechars($data[1])."','".db::escapechars($data[2])."','".db::escapechars($data[3])."','".db::escapechars($data[4])."')";
-                    db::execute($sql);
-                }
-            fclose($handle);
-            
-            
-            print "<p>Bible verses inserted</p>";
-            
             
         ?>
         <p>
@@ -140,6 +126,22 @@ if($_POST['save'] == 1){
             db::execute($sql2);
         }
         
+        
+        print "<p>Loading NKJV Bible into DB...</p>";
+            $myfile = 'bible_nkj.csv';
+            $handle = fopen($myfile, "r");
+                while (!feof($handle)) {
+                    $data = fgetcsv($handle, 2048, ",");
+
+                    $sql = "INSERT INTO bible_nkj VALUES ('".db::escapechars($data[0])."','".db::escapechars($data[1])."','".db::escapechars($data[2])."','".db::escapechars($data[3])."','".db::escapechars($data[4])."')";
+                    db::execute($sql);
+                }
+            fclose($handle);
+            
+            
+            print "<p>Bible verses inserted</p>";
+            
+            
         ?>
         
         </div>

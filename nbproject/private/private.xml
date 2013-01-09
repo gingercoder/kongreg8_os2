@@ -8,8 +8,6 @@
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/css/screen.css</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/application/homepage.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/groups/groups.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/admin/users.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/admin/users.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/kidschurch/editGroup.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/kidschurch/home.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/kidschurch/home.php</file>
@@ -24,13 +22,10 @@
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/kidschurch/registerSignOut.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/kidschurch/register.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/reports/reports.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/core/modulecontrol.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/application/modulecontrol.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/core/moduleprivs.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/application/moduleprivs.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/kidschurch/plans.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/kidschurch/plans.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/groups/home.php</file>
+        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/setup/index.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/groups/home.php</file>
     </open-files>
 </project-private>

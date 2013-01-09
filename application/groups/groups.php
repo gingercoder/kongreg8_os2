@@ -473,17 +473,17 @@ class groups extends kongreg8app{
     {
         $campus = db::escapechars($campus);
         if($campus == "all"){
-            $sql = "SELECT groupname, groupID FROM groups ORDER BY groupname ASC";
+            $sql = "SELECT groupname, groupID, campusName FROM groups RIGHT JOIN campus on groups.campusid=campus.campusid ORDER BY groupname ASC";
         }
         else{
-            $sql = "SELECT groupname, groupID FROM groups WHERE campusid='$campus' ORDER BY groupname ASC";
+            $sql = "SELECT groupname, groupID, campusName FROM groups RIGHT JOIN campus on groups.campusid = campus.campusid WHERE groups.campusid='$campus' ORDER BY groupname ASC";
         }
         $result = db::returnallrows($sql);
         
         $grouplist = "";
         
         foreach($result as $group){
-            $grouplist .= "<option value=\"" . $group['groupID'] . "\">" . $group['groupname'] . "</option>";
+            $grouplist .= "<option value=\"" . $group['groupID'] . "\">" . $group['groupname'] . "(".$group['campusName'].")</option>";
         }
         
         return $grouplist;
@@ -545,6 +545,9 @@ class groups extends kongreg8app{
         $mainmessage = $result['mainmessage'];
         
         $groupID = $result['groupID'];
+        
+        // Error toggle to notify of errors
+        $errortoggle = 0;
         // get the information on who is in a group
         
         if($groupID == 0){
@@ -567,10 +570,18 @@ class groups extends kongreg8app{
             if($sendmail){
                 $sql = "UPDATE emailtemp WHERE mailID";
             }
+            else{
+                $errortoggle = 1;
+            }
 
             
         }
-        return;
+        if($errortoggle == 1){
+            return false;
+        }
+        else{
+            return true;
+        }
         
     }
     
