@@ -380,6 +380,7 @@ INSERT INTO `kmodules` (`moduleName`, `moduleVersion`, `moduleAuthor`, `userleve
 ('Backup', '2.0.1', 'Rick Trotter', 5),
 ('Kids Church', '2.0.1', 'Rick Trotter', 3),
 ('Module Control', '1.0', 'Rick Trotter', 5),
+('Settings', '1.0', 'Rick Trotter', 5),
 ('Bible', '1.0', 'Rick Trotter', 1);
 
 
