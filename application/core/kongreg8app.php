@@ -1179,6 +1179,105 @@ class kongreg8app{
     }
     
     
+    /*
+     * Function to send email from the system
+     * Used for group communications - sends anything in the queue
+     * by a specific user
+     */
+    public function sendEmail($userID)
+    {
+        $userID = db::escapechars($userID);
+        
+        $sql = "SELECT * FROM emailtemp WHERE userID=$userID AND mailstatus = 'pending'";
+        $result = db::returnallrows($sql);
+        foreach ($result as $email){
+            $to = $email['sendto'];
+            $subject = $email['thesubject'];
+            $plainmessage = $email['thebody'];
+            
+            $headers = $this->prettyEmail($plainmessage, $subject);
+            $mailID = $email['mailID'];
+            
+            $sendmail = mail($to, $subject, '', $headers);
+            if($sendmail){
+                $sql2 = "UPDATE emailtemp SET mailstatus='sent' WHERE mailID='".$mailID."' LIMIT 1";
+                $updatetemp = db::execute($sql2);
+            }
+            else{
+                $errortoggle = 1;
+            }
+            
+        }
+        
+        // verify state and return
+        if($errortoggle == 1){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+        /*
+         * Function to beautify the email sent from the system
+         * 
+         */
+        
+        public function prettyEmail($mymessage, $subject)
+        {
+            
+          // SET UP SERVER INFORMATION 
+            $sql = "SELECT * FROM settings WHERE settingName='commsEmail'";
+            $result = db::returnrow($sql);
+            $serverFrom = $result['settingValue'];
+            
+            $sql = "SELECT * FROM settings WHERE settingName='emailFooter'";
+            $result = db::returnrow($sql);
+            $serverFooter = $result['settingValue'];
+            
+            $sql = "SELECT * FROM settings WHERE settingName='licensedto'";
+            $result = db::returnrow($sql);
+            $serverApp = $result['settingValue'];
+                        
+                // PLAIN TEXT INFORMATION FOR EMAIL
+                $bodyt = $mymessage;
+
+                // HTML BODY FOR EMAIL
+                $bodyh = "
+                      <html><head><title>".$subject."</title></head>
+                      <body><p style=\"font-size: 24pt; font-family: helvetica, arial, sans-serif; background-color: #336699; color: #fff; display: block; width: 100%; padding: 15px;\">" . $subject . ".</p>
+                            <p>".$mymessage."</p>
+                            <p><strong>". $serverApp.".<br/>".$serverFooter."</p>
+                       </body></html>";
+
+
+                // Main settings for the email
+                $semi_rand = md5(time());
+                $mime_boundary = "MULTIPART_BOUNDARY_$semi_rand";
+
+                $fromemailsetting = "From: ".$serverFrom;
+                $replyemailsetting = "Reply-To: ".$serverFrom;
+                $returnpath = "Return-Path:<".$serverFrom.">";
+
+                // Start Email content (all in header for multi part encoding 
+
+                $headers =  $fromemailsetting . "\n" . $replyemailsetting  . "\n" . $returnpath . "\n". 'X-Mailer: PHP/' . phpversion() . "\n";
+
+                $headers .= "MIME-Version: 1.0\r\n";
+                $headers .= "Content-Type: multipart/alternative; boundary=" . $mime_boundary . "\r\n";
+                $headers .= "\n--$mime_boundary\n";
+                $headers .= "Content-Type: text/plain; charset=iso-8859-1\r\n";
+                $headers .= "Content-Transfer-Encoding: 7bit\r\n";
+                $headers .= "$bodyt";
+                $headers .= "\n--$mime_boundary\n";
+                $headers .= "Content-Type: text/html; charset=iso-8859-1\r\n";
+                $headers .= "Content-Transfer-Encoding: 7bit\r\n";
+                $headers .= "$bodyh";
+            
+            return $headers;
+        }
+    
+    
+    
 }
 
 ?>

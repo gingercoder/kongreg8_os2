@@ -14,13 +14,23 @@ else{
     $tid = "";
 }
 // SEND A SET OF MESSAGES TO PEOPLE
-if($_GET['action'] == "send"){
+if($_GET['action'] == 'send'){
     
-    if($tid !=""){
+    $tid = $_GET['tid'];
         
+    if(!empty($tid)){
+
+        if($objGroup->sendEmailCampaign($tid) == 'true'){
+                $toggleMessage = "<p class=\"updated\">Email Campaign Sent.</p>";
+        }
+        else{
+            
+            $errorMsg = "Some errors were encountered in the processing, please try again. Some group emails could not sent.";
+        }
     }
     else{
-        $errorMsg = "No Template ID";
+        $errorMsg = "<p class=\"confirm\">No Template ID passed - cannot continue.</p>";
+        
     }
 }
 

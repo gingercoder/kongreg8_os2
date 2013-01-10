@@ -125,9 +125,12 @@ if($_POST['save'] == 1){
             $sql2 = "INSERT INTO useraccess SET userID='".$userID."', moduleName='".$module['moduleName']."'";
             db::execute($sql2);
         }
+
         
         
-        print "<p>Loading NKJV Bible into DB...</p>";
+        // Insert Bible IF specified
+        if($_POST['insertbible'] == 'yes'){
+            print "<p>Loading NKJV Bible into DB...</p>";
             $myfile = 'bible_nkj.csv';
             $handle = fopen($myfile, "r");
                 while (!feof($handle)) {
@@ -139,8 +142,8 @@ if($_POST['save'] == 1){
             fclose($handle);
             
             
-            print "<p>Bible verses inserted</p>";
-            
+            print "<p>Bible verses inserted</p>";   
+        }
             
         ?>
         
@@ -171,6 +174,10 @@ else{
             Please enter some information about your database server and what you would like as your primary settings to get you started. If you don't know what your database 
             server is called or it's IP address, contact your server administrator. It is most likely called &quot;localhost&quot; 
             but this may vary depending on your hosting provider.<br/>You will need to create or have a blank database ready and provide the name below.
+        </p>
+        <p>
+            The New King James Version Bible sometimes takes a while to install (it is over 300,000 database entries). If you have problems installing, you 
+            can always choose not to install this on the form below.
         </p>
         <p>
             <strong>Administration Team</strong><br/>
@@ -213,10 +220,12 @@ else{
             <input type="text" name="adminname" id="adminname" placeholder="kadmin" />*
             <label for="adminpassword">Primary Admin Password</label>
             <input type="password" name="adminpassword" id="adminpassword" />*
-            <label for="adminname">Primary Admin User Email</label>
+            <label for="adminemail">Primary Admin User Email</label>
             <input type="text" name="adminemail" id="adminemail" />*
             <label for="churchemail">church contact email address</label>
             <input type="text" name="churchemail" id="churchemail" />*
+            <label for="insertbible">Insert NKJV Bible (large import)</label>
+            <select name="insertbible" id="insertbible" ><option value="yes">Yes</option><option value="no">No</option></select>
             <br/>
             <strong>* Please ensure you enter correct values for these fields - essential to be able to log in correctly</strong>
             <br/><br/>

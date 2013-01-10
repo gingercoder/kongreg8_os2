@@ -128,10 +128,6 @@
             // Group Remove
             require_once('application/kidschurch/home.php');
             break;
-        case "420":
-            // Group Email
-            require_once ('application/kidschurch/mailGroup.php');
-            break;
         case "421":
             // View Group Members
             require_once ('application/kidschurch/viewMembers.php');
