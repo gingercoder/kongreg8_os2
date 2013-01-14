@@ -13,7 +13,7 @@ if(($_GET['function'] == 'signin')||($_POST['function'] == 'signin')){
     require_once('modules/kidschurch/registerSignIn.php');
     
 }
-elseif(($_GET['function'] == 'signout')||($_POST['function'] == 'singout')){
+elseif(($_GET['function'] == 'signout')||($_POST['function'] == 'signout')){
     // Sign a child out - check if first stage posted
     require_once('modules/kidschurch/registerSignOut.php');
     

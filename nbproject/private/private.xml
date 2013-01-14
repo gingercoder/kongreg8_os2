@@ -18,14 +18,15 @@
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/kidschurch/kidschurch.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/kidschurch/registerHistoric.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/kidschurch/registerHome.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/kidschurch/registerSignIn.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/kidschurch/registerSignOut.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/kidschurch/register.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/reports/reports.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/core/moduleprivs.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/application/moduleprivs.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/kidschurch/plans.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/setup/index.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/groups/home.php</file>
+        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/groups/mailGroup.php</file>
+        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/groups/mailGroup.php</file>
+        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/groups/viewMembers.php</file>
+        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/groups/viewMembers.php</file>
     </open-files>
 </project-private>

@@ -25,6 +25,7 @@
                 $signmein = $objKidschurch->signChildIn(db::escapechars($_POST['person']), db::escapechars($_POST['groupid']), db::escapechars($_POST['parent']));
                 if($signmein == true){
                     print "<p class=\"updated\">Child signed in to Kids Church</p>";
+                    print "<h3>Badge ID #".db::getlastid()." (".$objKidschurch->getChildInfo(db::escapechars($_POST['person'])).")</h3>";
                 }
                 else{
                     print "<p><strong>Child could not be signed in - something went wrong, please try again</strong></p>";

@@ -31,16 +31,23 @@
                     }
                     else{
                         // Just using the same parent
-                        
+                        $signmeout = $objKidschurch->signChildOut(db::escapechars($_POST['person']), db::escapechars($_POST['parentid']), db::escapechars($_POST['rid']));
+                        if($signmeout == true){
+                            print "<p class=\"updated\">Child signed out</p>";
+                        }
+                        else{
+                            print "<p class=\"confirm\">Could not sign child out, something went wrong and I logged the error</p>";
+                        }
                     }
                 }
                 else{
                     // Form to verify same parent
                     ?>
         <form name="signout" action="index.php" method="post">
+            <?php print "<h2>Badge #".db::escapechars($_GET['rid'])."</h2><h3>".$objKidschurch->getChildInfo(db::escapechars($_GET['person']))."</h3>"; ?>
             <p>
             Signed in by :<br/>
-            <?php print $objKidschurch->getParentInfo($_GET['person']); ?>
+            <?php print "<h3>".$objKidschurch->getParentInfo(db::escapechars($_GET['par']))."</h3>"; ?>
             </p>
             <p>
                 If not this parent signing out enter new details:
@@ -48,6 +55,7 @@
             <label for="altperson">Name of parent/guardian</label>
             <input type="text" name="altperson" id="altperson" />  
             <input type="hidden" name="mid" id="mid" value="460" />
+            <input type="hidden" name="function" id="function" value="signout" />
             <input type="hidden" name="stage" id="stage" value="1" />
             <input type="hidden" name="person" id="person" value="<?php print $_GET['person']; ?>" />
             <input type="hidden" name="rid" id="rid" value="<?php print $_GET['rid'];?>" />

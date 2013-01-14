@@ -73,9 +73,11 @@ class kidschurch extends kongreg8app{
         if($result){
             $lastid = db::getlastid();
             $this->addMemberToGroup($lastID, $groupleader);
+            $this->logevent('Kids Church', $groupname.' kids church group added by '.$_SESSION['Kusername'], 'Kids Church');
             return true;
         }
         else{
+            $this->logerror('Kids Church', $groupname.' kids church group could not be added by '.$_SESSION['Kusername'], 'Kids Church');
             return false;
         }
         
@@ -632,25 +634,33 @@ class kidschurch extends kongreg8app{
      * Function to sign children out of kids church
      * 
      */
-    public function signChildOut($memberid, $groupid, $parentid)
+    public function signChildOut($memberid,$parentid, $registerid)
     {
         $memberid = db::escapechars($memberid);
-        $groupid = db::escapechars($groupid);
         $parentid = db::escapechars($parentid);
+        $registerid = db::escapechars($registerid);
         
-        $sql = "INSERT INTO kidschurchregister SET
-                childid = '".$memberid."',
+        $sql = "UPDATE kidschurchregister SET
                 userid = '".$this->usernametoid($_SESSION['Kusername'])."',
                 kidschurchgroupid='$groupid',
                 parentid='".$parentid."',
                 timeout=NOW()
+                WHERE
+                registerid = '$registerid'
+                AND
+                childid = '".$memberid."'
+                LIMIT 1
                 ";
         
         $result = db::execute($sql); 
         if($result){
+            $logmessage = $_SESSION['Kusername']." signed out ".$this->getChildInfo($memberid)." from Kids Church";
+            $this->logevent('Kids Church', $logmessage, 'Kids Church Register');
             return true;
         }
         else{
+            $logmessage = $_SESSION['Kusername']." attempted signed out of ".$this->getChildInfo($memberid)." but ended with an error.";
+            $this->logerror('Kids Church', $logmessage, 'Kids Church Register');
             return false;
         }
         
@@ -663,7 +673,7 @@ class kidschurch extends kongreg8app{
      */
     public function displaySignedIn()
     {
-        $sql = "SELECT * FROM kidschurchregister WHERE timeout IS NULL";
+        $sql = "SELECT * FROM kidschurchregister WHERE timeout LIKE '0000-%'";
         if(db::getnumrows($sql) > 0){
             print "<p>There are ".db::getnumrows($sql)." children currently signed-in.</p>";
             $result = db::returnallrows($sql);
@@ -674,7 +684,7 @@ class kidschurch extends kongreg8app{
                 $result2 = db::returnrow($sql2);
                 $sql3 = "SELECT firstname, surname FROM churchmembers WHERE memberID='".$child['childid']."'";
                 $result3 = db::returnrow($sql3);
-                $outputtable .= "<li>&lt;<strong> " . $child['registerid']. " </strong>&gt; " . $result3['firstname'] . " " . $result3['surname'] . " in ". $result2['groupname'] . "  [ <a href=\"index.php?mid=460&function=signout&person=".$child['childid']."&rid=".$child['registerid']."&stage=1\">Sign Out</a> ]</li>";
+                $outputtable .= "<li>&lt;<strong> " . $child['registerid']. " </strong>&gt; " . $result3['firstname'] . " " . $result3['surname'] . " in ". $result2['groupname'] . "  [ <a href=\"index.php?mid=460&function=signout&person=".$child['childid']."&rid=".$child['registerid']."&par=".$child['parentid']."&stage=1\">Sign Out</a> ]</li>";
                 
             }
             
@@ -705,7 +715,14 @@ class kidschurch extends kongreg8app{
                 $result2 = db::returnrow($sql2);
                 $sql3 = "SELECT firstname, surname FROM churchmembers WHERE memberID='".$child['childid']."'";
                 $result3 = db::returnrow($sql3);
-                $outputtable .= "<li>&lt;<strong> " . $child['registerid']. " </strong>&gt; " . $result3['firstname'] . " " . $result3['surname'] . " in ". $result2['groupname'] . " in at " . $child['timein'] . " out at " . $child['timeout'] . "</li>";
+                $outputtable .= "<li>&lt;<strong> " . $child['registerid']. " </strong>&gt; " . $result3['firstname'] . " " . $result3['surname'] . " in ". $result2['groupname'] . " in at " . $child['timein']; 
+                if(($child['timeout'] == '0000-00-00 00:00:00')||(is_null($child['timeout']))){
+                    $outputtable .= " <strong>still signed in!</strong>";
+                }
+                else{
+                    $outputtable .= " out at " . $child['timeout'];
+                }
+                $outputtable .= "</li>";
                 
             }
             
@@ -734,6 +751,26 @@ class kidschurch extends kongreg8app{
             return "Cannot find parent member information";
         }
     }
+    
+    /*
+     * Function to retrieve the child's info
+     * 
+     */
+    public function getChildInfo($memberID)
+    {
+        $memberID = db::escapechars($memberID);
+        
+        $sql = "SELECT prefix, firstname, surname, address1, address2, postcode FROM churchmembers WHERE memberID='$memberID'";
+        $result = db::returnrow($sql);
+        if($result){
+            return $result['prefix']." ".$result['firstname'].$result['surname']." , ".$result['address1']." ".$result['address2']." ".$result['postcode'];
+        }
+        else{
+            return "Cannot find child member information";
+        }
+    }
+    
+    
     
     /*
      * Function to display all plans stored in the system

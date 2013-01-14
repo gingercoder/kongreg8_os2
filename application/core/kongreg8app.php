@@ -1112,9 +1112,12 @@ class kongreg8app{
             }
         }
         if($error == 1){
+            $message = $_SESSION['Kusername'].' tried to update settings but this failed from '.$this->getIP();
+            $this->logerror('Settings', $message, 'Settings');
             return false;
         }
         else{
+            
             return true;
         }
         
@@ -1149,6 +1152,7 @@ class kongreg8app{
             echo $returndata;
         }
         else{
+            $this->logerror('Module Control', 'Could not find modules!', 'Module Control');
             echo "<p>Modules not found!!</p>";
         }
         return;
@@ -1170,9 +1174,14 @@ class kongreg8app{
             }
         }
         if($error == 1){
+            $logmessage =  $_SESSION['Kusername'].' Could not update modules from '.$this->getIP();
+            $this->logerror('Module Control', $logmessage, 'Module Control');
+            echo "<p>Modules not found!!</p>";
             return false;
         }
         else{
+            $logmessage =  $_SESSION['Kusername'].' Updated modules from '.$this->getIP();
+            $this->logevent('Module Control', $logmessage, 'Module Control');
             return true;
         }
         
@@ -1207,13 +1216,18 @@ class kongreg8app{
                 $errortoggle = 1;
             }
             
+            
         }
         
         // verify state and return
         if($errortoggle == 1){
+            $errorlog = 'Could not send email campaign correctly. Some errors logged by '.$_SESSION['Kusername'];
+            $this->logerror('Email System', $errorlog , 'Email');
             return false;
         }
         else{
+            $logmessage = 'Email sent by '.$_SESSION['Kusername'];
+            $this->logevent('Email System', $logmessage, 'Email');
             return true;
         }
     }
@@ -1244,9 +1258,11 @@ class kongreg8app{
                 // HTML BODY FOR EMAIL
                 $bodyh = "
                       <html><head><title>".$subject."</title></head>
-                      <body><p style=\"font-size: 24pt; font-family: helvetica, arial, sans-serif; background-color: #336699; color: #fff; display: block; width: 100%; padding: 15px;\">" . $subject . ".</p>
+                      <body><p style=\"font-size: 24pt; font-family: helvetica, arial, sans-serif; background-color: #336699; color: #fff; display: block; width: 100%; padding: 15px;\">" . $subject . "</p>
                             <p>".$mymessage."</p>
                             <p><strong>". $serverApp.".<br/>".$serverFooter."</p>
+                            <p style=\"font-size: 18pt; font-family: helvetica, arial, sans-serif; background-color: #336699; color: #fff; display: block; width: 100%; padding: 15px;\">Kongreg8<br/>
+                            <span style=\"font-size: 12pt; font-family: helvetica, arial, sans-serif;\">Church Member Database System from PizzaBoxSoftware.co.uk</span></p>
                        </body></html>";
 
 
