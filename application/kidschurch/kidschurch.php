@@ -634,7 +634,7 @@ class kidschurch extends kongreg8app{
      * Function to sign children out of kids church
      * 
      */
-    public function signChildOut($memberid,$parentid, $registerid)
+    public function signChildOut($memberid, $parentid, $registerid)
     {
         $memberid = db::escapechars($memberid);
         $parentid = db::escapechars($parentid);
@@ -720,7 +720,7 @@ class kidschurch extends kongreg8app{
                     $outputtable .= " <strong>still signed in!</strong>";
                 }
                 else{
-                    $outputtable .= " out at " . $child['timeout'];
+                    $outputtable .= " signed out at " . $child['timeout'] . " by ".$this->getParentInfo($child['parentid']);
                 }
                 $outputtable .= "</li>";
                 
@@ -769,7 +769,6 @@ class kidschurch extends kongreg8app{
             return "Cannot find child member information";
         }
     }
-    
     
     
     /*

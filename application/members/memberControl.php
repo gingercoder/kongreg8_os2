@@ -461,14 +461,26 @@ class memberControl extends kongreg8app{
                 return false;
             }
             else{
-                
-                $sql = "SELECT * FROM familylinks WHERE memberID='".db::escapechars($memberid)."'";
+                $memberid = db::escapechars($memberid);
+                $sql = "SELECT * FROM familyconstruct WHERE fromID='".$memberid."'";
                 $result = db::returnallrows($sql);
                 
-                $familygrid = "<table class=\"familylink\">";
+                $familygrid = "<table class=\"familylink\"><tr><th>Member Name</th><th>Relationship</th><th>&nbsp;</th>";
                 foreach($result as $member){
-                    $familygrid .= "<tr><td>".$member['userid']."</td>
-                                    <td><a href=\"index.php?mid=252&m=".$member['memberid']."\>View</a></td></tr>";
+                    $familygrid .= "<tr>";
+                    
+                    if($member['toID'] == $memberid){
+                        $familydata = $this->viewMember($member['fromID']);
+                    }
+                    else{
+                        $familydata = $this->viewMember($member['toID']);
+                    }
+                    
+                    $familygrid .= "<td>" . $familydata['firstname'] . " " . $familydata['surname'] . "</td>";
+                    $familygrid .= "<td>".$member['relationship']."</td>
+                                    <td><a href=\"index.php?mid=225&m=".$familydata['memberID']."\" class=\"runbutton\">View</a>
+                                        <a href=\"index.php?mid=230&m=".$familydata['memberID']."&action=remove\" class=\"delbutton\">Remove</a></td>
+                                        </tr>";
                 }
                 
                 $familygrid .= "</table>";

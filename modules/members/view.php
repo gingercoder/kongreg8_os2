@@ -21,7 +21,7 @@ if(!empty($errorMsg)){
         Showing all member information for <?php print $member['firstname']." ".$member['surname']; ?>.
     </p>
     <p>
-        If you would like to add a similar member <a href="index.php?mid=201&lastid=<?php print $member['memberID']; ?>">click here</a>
+        If you would like to add a similar member <a href="index.php?mid=201&lastid=<?php print $member['memberID']; ?>" class="runbutton">click here</a>
     </p>
     <?php
     if($errorMsg != ""){
@@ -185,8 +185,26 @@ if(!empty($errorMsg)){
                 </p>
 </div>
 
-<div class="contentBoxSmall">
+<div class="contentBox">
     <h2>Family Links</h2>
-    <a href="index.php?mid=230&m=<?php print $member['memberID']; ?>">Add family member</a>
+    <p>
+    <form name="addfamily" action="index.php" method="post" >
+        <label for="personname">Add family member:</label>
+        <input type="text" name="search" id="search" placeholder="enter name" />
+        <label for="relationship">Relationship</label>
+        <select name="relationship" id="relationship">
+            <option value="Partner">Partner</option>
+            <option value="Sibling">Sibling</option>
+            <option value="Child">Child</option>
+            <option value="Parent">Parent</option>
+        </select>
+        <input type="hidden" name="mid" id="mid" value="230" />
+        <input type="hidden" name="action" id="action" value="add" />
+        <input type="hidden" name="m" id="m" value="<?php print $member['memberID']; ?>" />
+        <input type="submit" name="submit" id="submit" value="Create Link" />
+    </form>
+    </p>
+    <p>
     <?php print $objMember->showFamilyLinks($member['memberID']); ?>
+    </p>
 </div>

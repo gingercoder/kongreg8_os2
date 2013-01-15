@@ -815,6 +815,26 @@ REPORTS CONTAINER AND OUTPUT INFORMATION
     color: #fff;
 }
 
+.familylink tr{
+        height: 25px;
+}
+.familylink th{
+    background-color: #336699;
+    color: #fff;
+    font: 14pt arial, sans-serif;
+    font-weight: bold;
+    height: 30px;
+    cellpadding: 4px;
+    padding: 6px;
+}
+.familylink td{
+    cellpadding: 4px;
+    padding: 4px;
+}
+.familylink tr:hover{
+    background-color: #6633cc;
+    color: #fff;
+}
 
 
 .okayrow{

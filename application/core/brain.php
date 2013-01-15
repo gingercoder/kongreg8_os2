@@ -65,7 +65,7 @@
             break;
         case "230":
             // Add family member
-            require_once('application/members/familymemberadd.php');
+            require_once('application/members/familymember.php');
             break;
         case "235":
             // Remove member
