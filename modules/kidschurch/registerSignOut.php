@@ -33,7 +33,7 @@
                         // Just using the same parent
                         $signmeout = $objKidschurch->signChildOut(db::escapechars($_POST['person']), db::escapechars($_POST['parentid']), db::escapechars($_POST['rid']));
                         if($signmeout == true){
-                            print "<p class=\"updated\">Child signed out</p>";
+                            print "<p class=\"updated\">Child signed out successfully</p>";
                         }
                         else{
                             print "<p class=\"confirm\">Could not sign child out, something went wrong and I logged the error</p>";

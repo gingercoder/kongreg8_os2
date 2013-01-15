@@ -3,7 +3,7 @@
 /*
  * My Reports System - run a defined report
  */
-$checkuserlevel = $objKongreg8->checkAccessLevel('MyReports');
+$checkuserlevel = $objKongreg8->checkAccessLevel('My Reports');
 if($checkuserlevel == false){
     require_once ('failcodes/userlevel.html');
     exit();

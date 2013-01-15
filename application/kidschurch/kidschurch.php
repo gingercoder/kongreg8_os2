@@ -776,22 +776,29 @@ class kidschurch extends kongreg8app{
      * Function to display all plans stored in the system
      * 
      */
-    public function showPlans($campusid)
+    public function showPlans($campusid, $planid='')
     {
+        $planid = db::escapechars($planid);
+        
         $sql = "SELECT * FROM kidschurchplans ";
         if($campusid !='all'){
             $sql .= "WHERE campusid='".db::escapechars($campusid)."' ";
         }
         $sql .= "ORDER BY activityDate ASC";
         $result = db::returnallrows($sql);
-        $returndata = "<table class=\"reportTable\"><tr><th>Date</th><th>Title</th><th>Action</th></tr>";
+        $returndata = "<table class=\"memberTable\"><tr><th>Date</th><th>Title</th><th>Action</th></tr>";
         foreach($result as $plan){
-            $returndata .= "<tr>";
+            if($planid == $plan['planID']){
+                $returndata .= "<tr class=\"highlight\">";
+            }
+            else{
+                $returndata .= "<tr>";
+            }
             $returndata .= "<td>".$plan['activityDate']."</td>";
             $returndata .= "<td>".$plan['activityTitle']."</td>";
             $returndata .= "<td>
-                            <a href=\"index.php?mid=450&action=sdf&p=".$plan['planID']."\">Edit</a>
-                            <a href=\"index.php?mid=450&action=sdf&p=".$plan['planID']."\">Delete</a>
+                            <a href=\"index.php?mid=450&action=edit&p=".$plan['planID']."\" class=\"runbutton\">Edit</a>
+                            <a href=\"index.php?mid=450&action=remove&p=".$plan['planID']."\" class=\"delbutton\">Delete</a>
                         </td>";
             $returndata .= "</tr>";
         }
@@ -800,6 +807,112 @@ class kidschurch extends kongreg8app{
         return $returndata;
     }
     
+    /*
+     * Insert new kids church plan
+     * 
+     */
+    public function createPlan($plantitle, $plantheme, $planactivitites, $plandate, $planmaterials, $planconsent, $campus)
+    {
+        $plantitle = db::escapechars($plantitle);
+        $plantheme = db::escapechars($plantheme);
+        $planactivitites = db::escapechars($planactivitites);
+        $plandate = db::escapechars($plandate);
+        $planmaterials = db::escapechars($planmaterials);
+        $planconsent = db::escapechars($planconsent);
+        $campus = db::escapechars($campus);
+        
+        $sql = "INSERT INTO kidschurchplans SET
+                activityTitle='$plantitle',
+                activityTheme='$plantheme',
+                activities='$planactivitites',
+                activityDate='$plandate',
+                materialsNeeded='$planmaterials',
+                consentRequired='$planconsent',
+                campusid='$campus'
+                ";
+        $createplan = db::execute($sql);
+        if($createplan){
+            $this->logevent('Kids Church', $_SESSION['Kusername'].' created a kids church plan', 'Plan');
+            return true;
+        }
+        else{
+            $this->logerror('Kids Church', $_SESSION['Kusername'].' tried to create a kids church plan but it failed', 'Plan');
+            return false;
+        }
+    }
+    
+    
+    /*
+     * Insert new kids church plan
+     * 
+     */
+    public function editPlan($plantitle, $plantheme, $planactivitites, $plandate, $planmaterials, $planconsent, $campus, $planid)
+    {
+        $plantitle = db::escapechars($plantitle);
+        $plantheme = db::escapechars($plantheme);
+        $planactivitites = db::escapechars($planactivitites);
+        $plandate = db::escapechars($plandate);
+        $planmaterials = db::escapechars($planmaterials);
+        $planconsent = db::escapechars($planconsent);
+        $campus = db::escapechars($campus);
+        $planid = db::escapechars($planid);
+        
+        $sql = "UPDATE kidschurchplans SET
+                activityTitle='$plantitle',
+                activityTheme='$plantheme',
+                activities='$planactivitites',
+                activityDate='$plandate',
+                materialsNeeded='$planmaterials',
+                consentRequired='$planconsent',
+                campusid='$campus'
+                WHERE
+                planID = '$planid'
+                LIMIT 1
+                ";
+        $createplan = db::execute($sql);
+        if($createplan){
+            $this->logevent('Kids Church', $_SESSION['Kusername'].' edited a kids church plan', 'Plan');
+            return true;
+        }
+        else{
+            $this->logerror('Kids Church', $_SESSION['Kusername'].' tried to edit a kids church plan but it failed', 'Plan');
+            return false;
+        }
+    }
+    
+    /*
+     * Function to remove a plan from the system
+     * 
+     */
+    public function planRemove($planid)
+    {
+        $planid = db::escapechars($planid);
+        
+        $sql = "DELETE FROM kidschurchplans WHERE planID='$planid' LIMIT 1";
+        $remove = db::execute($sql);
+        if($remove){
+            $this->logevent('Kids Church', $_SESSION['Kusername'].' removed a kids church plan', 'Plan');
+            return true;
+        }
+        else{
+            $this->logerror('Kids Church', $_SESSION['Kusername'].' tried to remove a kids church plan but it failed', 'Plan');
+            return false;
+        }
+        
+    }
+    
+    /*
+     * Pull plan data for edit form
+     * 
+     */
+    public function viewPlan($planid)
+    {
+        $planid = db::escapechars($planid);
+        $sql = "SELECT * FROM kidschurchplans WHERE planID='$planid'";
+        $planinfo = db::returnrow($sql);
+        return $planinfo;
+        
+    }
     
 }
 
