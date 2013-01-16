@@ -6,21 +6,11 @@
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/core/kongreg8app.php</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/css/screen.css</file>
         <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/application/homepage.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/groups/groups.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/kidschurch/editGroup.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/kidschurch/home.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/kidschurch/home.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/stats/stats.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/stats/livestats.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/stats/googleGraphScript.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/kidschurch/kidschurch.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/kidschurch/registerHistoric.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/kidschurch/registerHome.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/kidschurch/registerSignOut.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/kidschurch/plans.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/kidschurch/registerSignIn.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/kidschurch/register.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/kidschurch/plans.php</file>
-        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/kidschurch/planedit.php</file>
+        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/members/view.php</file>
+        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/core/brain.php</file>
+        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/members/memberControl.php</file>
+        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/modules/members/familymember.php</file>
+        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/members/familymember.php</file>
+        <file>file:/Users/rick/Dropbox/Kongreg8/Code/kongreg8_os2/application/members/view.php</file>
     </open-files>
 </project-private>

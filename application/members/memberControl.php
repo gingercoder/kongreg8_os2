@@ -468,18 +468,11 @@ class memberControl extends kongreg8app{
                 $familygrid = "<table class=\"familylink\"><tr><th>Member Name</th><th>Relationship</th><th>&nbsp;</th>";
                 foreach($result as $member){
                     $familygrid .= "<tr>";
-                    
-                    if($member['toID'] == $memberid){
-                        $familydata = $this->viewMember($member['fromID']);
-                    }
-                    else{
-                        $familydata = $this->viewMember($member['toID']);
-                    }
-                    
+                    $familydata = $this->viewMember($member['toID']);
                     $familygrid .= "<td>" . $familydata['firstname'] . " " . $familydata['surname'] . "</td>";
                     $familygrid .= "<td>".$member['relationship']."</td>
                                     <td><a href=\"index.php?mid=225&m=".$familydata['memberID']."\" class=\"runbutton\">View</a>
-                                        <a href=\"index.php?mid=230&m=".$familydata['memberID']."&action=remove\" class=\"delbutton\">Remove</a></td>
+                                        <a href=\"index.php?mid=230&m=".$memberid."&link=".$member['relationshipID']."&action=remove\" class=\"delbutton\">Remove</a></td>
                                         </tr>";
                 }
                 
@@ -489,6 +482,123 @@ class memberControl extends kongreg8app{
             }
             
         }
+        
+        /*
+         * Create family link
+         * 
+         */
+        public function createFamilyLink($memberid, $linkmember, $relationship)
+        {
+            $memberid = db::escapechars($memberid);
+            $linkmember = db::escapechars($linkmember);
+            $relationship = db::escapechars($relationship);
+            
+            $sql = "INSERT INTO familyconstruct SET
+                    fromID='$memberid',
+                    toID='$linkmember',
+                    relationship='$relationship'
+                    ";
+            
+            $addmember = db::execute($sql);
+            
+            // Add the reverse relationship - work out what the reverse is before applying the modification
+            if($relationship == "Parent"){
+                $reverserelationship = "Child";
+            }
+            elseif($relationship == "Child"){
+                $reverserelationship = "Parent";
+            }
+            else{
+                $reverserelationship = $relationship;
+            }
+            
+            $sql = "INSERT INTO familyconstruct SET
+                    toID='$memberid',
+                    fromID='$linkmember',
+                    relationship='$reverserelationship'
+                    ";
+            
+            
+            
+            if($addmember){
+                $this->logevent('Family Construct', $_SESSION['Kusername'].' Added a new family link', 'Members');
+                
+                $addreverse = db::execute($sql);
+                if($addreverse){
+                    $this->logevent('Family Construct', $_SESSION['Kusername'].' Added a new family link (reverse entry)', 'Members');
+                    return true;
+                }
+                else{
+                    $this->logerror('Family Construct', $_SESSION['Kusername'].' Failed in trying to add a new family link (reverse entry)', 'Members');
+                    return false;
+                }
+            }
+            else{
+                $this->logerror('Family Construct', $_SESSION['Kusername'].' Failed in trying to add a new family link', 'Members');
+                return false;
+            }
+
+        }
+
+        /*
+         * Remove family link
+         * 
+         */
+        public function removeFamilyLink($linkid)
+        {
+            $linkid = db::escapechars($linkid);
+            $sql = "DELETE FROM familyconstruct WHERE relationshipID='$linkid' LIMIT 1";
+            $remove = db::execute($sql);
+            if($remove){
+                    $this->logevent('Family Construct', $_SESSION['Kusername'].' removed a family link', 'Members');
+                    return true;
+                }
+                else{
+                    $this->logerror('Family Construct', $_SESSION['Kusername'].' Failed in trying to remove a family link', 'Members');
+                    return false;
+                }
+        }
+        
+        
+        public function findMemberToAdd($searchstring, $originatorMember, $relationship)
+        {
+            $groupperson = db::escapechars($searchstring);
+            $originatorMember = db::escapechars($originatorMember);
+            $relationship = db::escapechars($relationship);
+                
+            // Search for the family member and create the search construct from members table
+
+            $sql = "SELECT * FROM churchmembers WHERE ";
+
+            $splitSearch = split(' ',trim($groupperson));
+            if(count($splitSearch) >= 1){
+                $sql .="firstname LIKE '%".$splitSearch[0]."%'";
+
+                if(count($splitSearch) > 2){      
+                    $sql .= "AND middlename LIKE '%".$splitSearch[1]."%'
+                            AND surname LIKE '%".$splitSearch[2]."%')";
+                }
+                if(count($splitSearch) == 2){
+                    $sql .= " AND surname LIKE '%".$splitSearch[1]."%'";
+                }
+
+            }
+
+            $result = db::returnallrows($sql);
+            $personlist = "";
+
+            // For each member you find, construct a link to select them
+            foreach($result as $person){
+                // Construct the a href entities for the people
+                $personlist .= "[ <a href=\"index.php?mid=230&action=add&m=" . $originatorMember . "&relationship=".$relationship."
+                    &to=".$person['memberID']."&confirm=true\" 
+                    title=\"".$person['address1']." ".$person['address2']." ".$person['email']."\" >" 
+                        . $person['firstname']." ".$person['middlename']." ". $person['surname']."</a> ] ";
+            }
+
+            return $personlist;
+
+        }   
         
         /*
          * Member removal process

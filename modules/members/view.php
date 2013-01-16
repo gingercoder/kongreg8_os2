@@ -24,8 +24,8 @@ if(!empty($errorMsg)){
         If you would like to add a similar member <a href="index.php?mid=201&lastid=<?php print $member['memberID']; ?>" class="runbutton">click here</a>
     </p>
     <?php
-    if($errorMsg != ""){
-        print $errorMsg;
+    if($toggleMessage != ""){
+        print $toggleMessage;
     }
     
     ?>
@@ -190,7 +190,7 @@ if(!empty($errorMsg)){
     <p>
     <form name="addfamily" action="index.php" method="post" >
         <label for="personname">Add family member:</label>
-        <input type="text" name="search" id="search" placeholder="enter name" />
+        <input type="text" name="personname" id="personname" placeholder="enter name" />
         <label for="relationship">Relationship</label>
         <select name="relationship" id="relationship">
             <option value="Partner">Partner</option>

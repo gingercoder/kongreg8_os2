@@ -19,14 +19,15 @@ if(!empty($errorMsg)){
     <span class="helpclass"><a href="#" onClick="showreminder('helpbox');"><img src="images/icons/information.png" alt="Show Help" title="Show Help" border="0" /></a></span>
     
     <?php
-    if($errorMsg != ""){
-        print $errorMsg;
+    if($toggleMessage != ""){
+        print $toggleMessage;
     }
     
     ?>
     <h2>Family Link</h2>
     <h3>
-        Member <?php print $member['firstname']." ".$member['surname']; ?>
+        From member <?php print $member['firstname']." ".$member['surname']; ?>
     </h3>
+    <a href="index.php?mid=225&m=<?php print $member['memberID']; ?>">&gt;&gt;&gt; Go back to member information</a>.
     
 </div>
