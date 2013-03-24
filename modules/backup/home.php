@@ -36,6 +36,7 @@ if(!empty($errorMsg)){
     <form name="exportdata" action="index.php" method="post">
         <input type="hidden" id="mid" name="mid" value="720" />
         <input type="hidden" id="action" name="action" value="backup" />
+        <input type="checkbox" name="backupbible" value="true" />Include Bible in Backup
         <label for="submit">&nbsp;</label>
         <input type="submit" id="submit" value="Run Backup" name="submit" />
     </form>

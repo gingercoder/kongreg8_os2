@@ -17,8 +17,8 @@ $objBackup = new backup();
 // EXPORT THE DATA IF TOLD TO
 if($_POST['action'] == "backup"){
     // Run the function
-        
-    $objBackup->backupDatabase();
+    
+    $objBackup->backupDatabase($_POST['backupbible']);
     $toggleMessage = "<p class=\"updated\">Backup generated</p>";
     
 }

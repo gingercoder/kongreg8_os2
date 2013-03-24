@@ -12,10 +12,15 @@ class backup extends kongreg8app{
      * Main Backup function
      * 
      */
-    public function backupDatabase()
+    public function backupDatabase($backupbible='')
     {
-        
-        
+        // Check if backing up bible as well
+        if(db::escapechars($backupbible) == true){
+            $allfiles == true;
+        }
+        else{
+            $allfiles == false;
+        }
         //save file
         $path = 'application/backup/files/backup-'.date('YmdHis').'.sql';
         $fp = fopen($path,'w');
@@ -27,47 +32,51 @@ class backup extends kongreg8app{
         foreach($tables as $table)
         {
             foreach($table as $item){
-            
-                $return = '-- DUMPING CONSTRUCT AND DATA FOR '.$item.';\n\n';
-                
-                $sql = "SHOW CREATE TABLE $item";
-                
-                
-                $result = db::returnallrows($sql);
-                // Dump the generate SQL
-                foreach($result as $entry){
-                    foreach($entry as $entryarray){
-                        $return .= $entryarray . ";\n\n";
-                    }
+                if(($item == 'nkjv_bible')&&($allfiles == false)){
+                    $return = '-- OMMITTING '.$item.';\n\n';
                 }
+                else{
+                    $return = '-- DUMPING CONSTRUCT AND DATA FOR '.$item.';\n\n';
 
-                // Dump the data for the table
-                $sql = "SELECT * FROM $item";
-                $data = db::returnallrows($sql);
-                $fieldsql = 'SHOW COLUMNS FROM '.$item;
-                $num_fields = db::getnumrows($fieldsql);
-                
-                foreach($data as $output){
-                    $return .= "INSERT INTO $item VALUES(";
-                    
-                    $i = 1;
-                    foreach($output as $blob){
-                        
-                        $blob = addslashes($blob);
-                        $blob = ereg_replace("\n","\\n",$blob);
-                        
-                        $return .= "$blob";
-                        if($i < $num_fields){
-                            $return .= ",";
+                    $sql = "SHOW CREATE TABLE $item";
+
+
+                    $result = db::returnallrows($sql);
+                    // Dump the generate SQL
+                    foreach($result as $entry){
+                        foreach($entry as $entryarray){
+                            $return .= $entryarray . ";\n\n";
                         }
-                        
-                        $i++;
                     }
-                    $return .= ");\n\n";
-                    
+
+                    // Dump the data for the table
+                    $sql = "SELECT * FROM $item";
+                    $data = db::returnallrows($sql);
+                    $fieldsql = 'SHOW COLUMNS FROM '.$item;
+                    $num_fields = db::getnumrows($fieldsql);
+
+                    foreach($data as $output){
+                        $return .= "INSERT INTO $item VALUES(";
+
+                        $i = 1;
+                        foreach($output as $blob){
+
+                            $blob = addslashes($blob);
+                            $blob = ereg_replace("\n","\\n",$blob);
+
+                            $return .= "$blob";
+                            if($i < $num_fields){
+                                $return .= ",";
+                            }
+
+                            $i++;
+                        }
+                        $return .= ");\n\n";
+
+                    }
                 }
-                
                 fwrite($fp,$return);
+                
             }
         }
         
