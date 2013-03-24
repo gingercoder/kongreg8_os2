@@ -763,7 +763,7 @@ class kidschurch extends kongreg8app{
         $sql = "SELECT prefix, firstname, surname, address1, address2, postcode FROM churchmembers WHERE memberID='$memberID'";
         $result = db::returnrow($sql);
         if($result){
-            return $result['prefix']." ".$result['firstname'].$result['surname']." , ".$result['address1']." ".$result['address2']." ".$result['postcode'];
+            return $result['prefix']." ".$result['firstname']." ".$result['surname']." - ".$result['address1'].", ".$result['address2'].", ".$result['postcode'];
         }
         else{
             return "Cannot find child member information";
