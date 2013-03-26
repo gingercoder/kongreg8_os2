@@ -15,7 +15,7 @@ class backup extends kongreg8app{
     public function backupDatabase($backupbible='')
     {
         // Check if backing up bible as well
-        if(db::escapechars($backupbible) == true){
+        if(db::escapechars($backupbible) == 'true'){
             $allfiles == true;
         }
         else{
@@ -27,25 +27,26 @@ class backup extends kongreg8app{
 
         // populate a list of all the tables
         
-        $tables = db::returnallrows('SHOW TABLES');
+        $tables = db::returnallrows('SHOW TABLES;');
         // iterate through each table
+        
         foreach($tables as $table)
         {
+            
             foreach($table as $item){
-                if(($item == 'nkjv_bible')&&($allfiles == false)){
-                    $return = '-- OMMITTING '.$item.';\n\n';
+                if(($item == 'bible_nkj')&&($allfiles == false)){
+                    $returndata = '-- OMMITTING '.$item.';\n\n';
                 }
                 else{
-                    $return = '-- DUMPING CONSTRUCT AND DATA FOR '.$item.';\n\n';
-
-                    $sql = "SHOW CREATE TABLE $item";
+                    $returndata = '-- DUMPING CONSTRUCT AND DATA FOR '.$item.';\n\n';
+                    $sql = "SHOW CREATE TABLE $item;";
 
 
                     $result = db::returnallrows($sql);
                     // Dump the generate SQL
                     foreach($result as $entry){
                         foreach($entry as $entryarray){
-                            $return .= $entryarray . ";\n\n";
+                            $returndata .= $entryarray . ";\n\n";
                         }
                     }
 
@@ -56,7 +57,7 @@ class backup extends kongreg8app{
                     $num_fields = db::getnumrows($fieldsql);
 
                     foreach($data as $output){
-                        $return .= "INSERT INTO $item VALUES(";
+                        $returndata .= "INSERT INTO $item VALUES(";
 
                         $i = 1;
                         foreach($output as $blob){
@@ -64,20 +65,22 @@ class backup extends kongreg8app{
                             $blob = addslashes($blob);
                             $blob = ereg_replace("\n","\\n",$blob);
 
-                            $return .= "$blob";
+                            $returndata .= "$blob";
                             if($i < $num_fields){
-                                $return .= ",";
+                                $returndata .= ",";
                             }
 
                             $i++;
                         }
-                        $return .= ");\n\n";
+                        $returndata .= ");\n\n";
 
                     }
                 }
-                fwrite($fp,$return);
+                
+                fwrite($fp, $returndata);
                 
             }
+            
         }
         
         

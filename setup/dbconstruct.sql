@@ -275,6 +275,7 @@ CREATE TABLE IF NOT EXISTS `kidschurchgroups` (
   `groupname` text,
   `groupdescription` text,
   `groupleader` bigint(20) DEFAULT NULL,
+  `campusid` int(11) NOT NULL,
   PRIMARY KEY (`groupID`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COMMENT='Kids Church Groups' AUTO_INCREMENT=1 ;
 
@@ -308,13 +309,13 @@ CREATE TABLE IF NOT EXISTS `kidschurchregister` (
   `registerid` int(11) NOT NULL AUTO_INCREMENT,
   `childid` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
-  `kidschurchgroupid` int(11) NOT NULL,
   `parentid` int(11) NOT NULL,
+  `kidschurchgroupid` int(11) NOT NULL,
   `timein` datetime NOT NULL,
   `timeout` datetime NOT NULL,
   PRIMARY KEY (`registerid`),
-  KEY `childid` (`childid`,`userid`,`kidschurchgroupid`,`parentid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Kids church register table for signing children in and out o' AUTO_INCREMENT=1 ;
+  KEY `childid` (`childid`,`userid`,`parentid`,`kidschurchgroupid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COMMENT='Kids Church Register details' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
