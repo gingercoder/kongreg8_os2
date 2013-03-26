@@ -745,7 +745,18 @@ class kidschurch extends kongreg8app{
         $sql = "SELECT prefix, firstname, surname, address1, address2, postcode FROM churchmembers WHERE memberID='$memberID'";
         $result = db::returnrow($sql);
         if($result){
-            return $result['prefix']." ".$result['firstname'].$result['surname']." , ".$result['address1']." ".$result['address2']." ".$result['postcode'];
+            $parentInfo = $result['prefix']." ".$result['firstname']." ".$result['surname'];
+            if($result['address1'] !=""){
+                $parentInfo .=" , ".$result['address1']." ";
+            }
+            if($result['address2'] !=""){
+                $parentInfo .=" , ".$result['address2']." ";
+            }
+            if($result['postcode'] !=""){
+                $parentInfo .=" , ".$result['postcode'];
+            }
+            
+            return $parentInfo;
         }
         else{
             return "Cannot find parent member information";
@@ -763,7 +774,18 @@ class kidschurch extends kongreg8app{
         $sql = "SELECT prefix, firstname, surname, address1, address2, postcode FROM churchmembers WHERE memberID='$memberID'";
         $result = db::returnrow($sql);
         if($result){
-            return $result['prefix']." ".$result['firstname']." ".$result['surname']." - ".$result['address1'].", ".$result['address2'].", ".$result['postcode'];
+            $childInfo = $result['prefix']." ".$result['firstname']." ".$result['surname'];
+            if($result['address1'] !=""){
+                $childInfo .=" , ".$result['address1']." ";
+            }
+            if($result['address2'] !=""){
+                $childInfo .=" , ".$result['address2']." ";
+            }
+            if($result['postcode'] !=""){
+                $childInfo .=" , ".$result['postcode'];
+            }
+            
+            return $childInfo;
         }
         else{
             return "Cannot find child member information";
